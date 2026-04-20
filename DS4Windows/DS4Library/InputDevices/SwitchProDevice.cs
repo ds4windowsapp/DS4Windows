@@ -1,4 +1,4 @@
-﻿/*
+/*
 DS4Windows
 Copyright (C) 2023  Travis Nickles
 
@@ -220,6 +220,8 @@ namespace DS4Windows.InputDevices
         /// </summary>
         private bool connectionOpened = false;
 
+        private bool isPowerA => hDevice.Attributes.VendorId == DS4Devices.POWER_A_VENDOR_ID;
+
         public override event ReportHandler<EventArgs> Report = null;
         public override event EventHandler<EventArgs> Removal = null;
 
@@ -397,7 +399,7 @@ namespace DS4Windows.InputDevices
                     HidDevice.ReadStatus res = hDevice.ReadFile(inputReportBuffer);
                     if (res == HidDevice.ReadStatus.Success)
                     {
-                        if (inputReportBuffer[0] != 0x30)
+                        if (inputReportBuffer[0] != 0x30 && !(isPowerA && inputReportBuffer[0] == 0x00))
                         {
                             //Console.WriteLine("Got unexpected input report id 0x{0:X2}. Try again",
                             //    inputReportBuffer[0]);
@@ -498,123 +500,162 @@ namespace DS4Windows.InputDevices
                         cState.Battery = 99;
                     }
 
-                    tempByte = inputReportBuffer[3];
-                    cState.Circle = (tempByte & 0x08) != 0;
-                    cState.Cross = (tempByte & 0x04) != 0;
-                    cState.Triangle = (tempByte & 0x02) != 0;
-                    cState.Square = (tempByte & 0x01) != 0;
-                    cState.R1 = (tempByte & 0x40) != 0;
-                    cState.R2Btn = (tempByte & 0x80) != 0;
-                    cState.R2 = (byte)(cState.R2Btn ? 255 : 0);
-                    cState.R2Raw = cState.R2;
-
-                    tempByte = inputReportBuffer[4];
-                    cState.Share = (tempByte & 0x01) != 0;
-                    cState.Options = (tempByte & 0x02) != 0;
-                    cState.PS = (tempByte & 0x10) != 0;
-                    cState.Capture = (tempByte & 0x20) != 0;
-                    cState.L3 = (tempByte & 0x08) != 0;
-                    cState.R3 = (tempByte & 0x04) != 0;
-
-                    tempByte = inputReportBuffer[5];
-                    cState.DpadUp = (tempByte & 0x02) != 0;
-                    cState.DpadDown = (tempByte & 0x01) != 0;
-                    cState.DpadLeft = (tempByte & 0x08) != 0;
-                    cState.DpadRight = (tempByte & 0x04) != 0;
-                    cState.L1 = (tempByte & 0x40) != 0;
-                    cState.L2Btn = (tempByte & 0x80) != 0;
-                    cState.L2 = (byte)(cState.L2Btn ? 255 : 0);
-                    cState.L2Raw = cState.L2;
-
-                    stick_raw[0] = inputReportBuffer[6];
-                    stick_raw[1] = inputReportBuffer[7];
-                    stick_raw[2] = inputReportBuffer[8];
-
-                    tempAxis = (stick_raw[0] | ((stick_raw[1] & 0x0F) << 8)) - leftStickOffsetX;
-                    tempAxis = tempAxis > leftStickXData.max ? leftStickXData.max : (tempAxis < leftStickXData.min ? leftStickXData.min : tempAxis);
-                    cState.LX = (byte)((tempAxis - leftStickXData.min) / (double)(leftStickXData.max - leftStickXData.min) * 255);
-
-                    tempAxis = ((stick_raw[1] >> 4) | (stick_raw[2] << 4)) - leftStickOffsetY;
-                    tempAxis = tempAxis > leftStickYData.max ? leftStickYData.max : (tempAxis < leftStickYData.min ? leftStickYData.min : tempAxis);
-                    cState.LY = (byte)((((tempAxis - leftStickYData.min) / (double)(leftStickYData.max - leftStickYData.min) - 0.5) * -1.0 + 0.5) * 255);
-
-                    stick_raw2[0] = inputReportBuffer[9];
-                    stick_raw2[1] = inputReportBuffer[10];
-                    stick_raw2[2] = inputReportBuffer[11];
-
-                    tempAxis = (stick_raw2[0] | ((stick_raw2[1] & 0x0F) << 8)) - rightStickOffsetX;
-                    tempAxis = tempAxis > rightStickXData.max ? rightStickXData.max : (tempAxis < rightStickXData.min ? rightStickXData.min : tempAxis);
-                    cState.RX = (byte)((tempAxis - rightStickXData.min) / (double)(rightStickXData.max - rightStickXData.min) * 255);
-
-                    tempAxis = ((stick_raw2[1] >> 4) | (stick_raw2[2] << 4)) - rightStickOffsetY;
-                    tempAxis = tempAxis > rightStickYData.max ? rightStickYData.max : (tempAxis < rightStickYData.min ? rightStickYData.min : tempAxis);
-                    //cState.RY = (byte)((tempAxis - STICK_MIN) / (STICK_MAX - STICK_MIN) * 255);
-                    cState.RY = (byte)((((tempAxis - rightStickYData.min) / (double)(rightStickYData.max - rightStickYData.min) - 0.5) * -1.0 + 0.5) * 255);
-
-                    for (int i = 0; i < 3; i++)
+                    if (isPowerA)
                     {
-                        int data_offset = i * 12;
-                        int gyro_offset = i * 3;
-                        accel_raw[IMU_XAXIS_IDX] = (short)((ushort)(inputReportBuffer[16 + data_offset] << 8) | inputReportBuffer[15 + data_offset]);
-                        accel_raw[IMU_YAXIS_IDX] = (short)((ushort)(inputReportBuffer[14 + data_offset] << 8) | inputReportBuffer[13 + data_offset]);
-                        accel_raw[IMU_ZAXIS_IDX] = (short)((ushort)(inputReportBuffer[18 + data_offset] << 8) | inputReportBuffer[17 + data_offset]);
+                        byte b1 = inputReportBuffer[1];
+                        byte b2 = inputReportBuffer[2];
+                        byte dpad = inputReportBuffer[3];
+                        
+                        cState.Square = (b1 & 0x01) != 0; // Y
+                        cState.Cross = (b1 & 0x02) != 0; // B
+                        cState.Circle = (b1 & 0x04) != 0; // A
+                        cState.Triangle = (b1 & 0x08) != 0; // X
+                        cState.L1 = (b1 & 0x10) != 0;
+                        cState.R1 = (b1 & 0x20) != 0;
+                        cState.L2Btn = (b1 & 0x40) != 0;
+                        cState.L2 = (byte)(cState.L2Btn ? 255 : 0);
+                        cState.L2Raw = cState.L2;
+                        cState.R2Btn = (b1 & 0x80) != 0;
+                        cState.R2 = (byte)(cState.R2Btn ? 255 : 0);
+                        cState.R2Raw = cState.R2;
 
-                        tempShort = gyro_raw[IMU_YAW_IDX + gyro_offset] = (short)((ushort)(inputReportBuffer[24 + data_offset] << 8) | inputReportBuffer[23 + data_offset]);
-                        //gyro_out[IMU_YAW_IDX + gyro_offset] = (short)(tempShort - device.gyroBias[IMU_YAW_IDX]);
-                        gyro_out[IMU_YAW_IDX + gyro_offset] = (short)(tempShort);
+                        cState.Share = (b2 & 0x01) != 0; // -
+                        cState.Options = (b2 & 0x02) != 0; // +
+                        cState.L3 = (b2 & 0x04) != 0;
+                        cState.R3 = (b2 & 0x08) != 0;
+                        cState.PS = (b2 & 0x10) != 0; // Home
+                        cState.Capture = (b2 & 0x20) != 0; // Capture
 
-                        tempShort = gyro_raw[IMU_PITCH_IDX + gyro_offset] = (short)((ushort)(inputReportBuffer[22 + data_offset] << 8) | inputReportBuffer[21 + data_offset]);
-                        //gyro_out[IMU_PITCH_IDX + gyro_offset] = (short)(tempShort - device.gyroBias[IMU_PITCH_IDX]);
-                        gyro_out[IMU_PITCH_IDX + gyro_offset] = (short)(tempShort);
+                        cState.DpadUp = dpad == 0 || dpad == 1 || dpad == 7;
+                        cState.DpadDown = dpad == 3 || dpad == 4 || dpad == 5;
+                        cState.DpadLeft = dpad == 5 || dpad == 6 || dpad == 7;
+                        cState.DpadRight = dpad == 1 || dpad == 2 || dpad == 3;
 
-                        tempShort = gyro_raw[IMU_ROLL_IDX + gyro_offset] = (short)((ushort)(inputReportBuffer[20 + data_offset] << 8) | inputReportBuffer[19 + data_offset]);
-                        //gyro_out[IMU_ROLL_IDX + gyro_offset] = (short)(tempShort - device.gyroBias[IMU_ROLL_IDX]);
-                        gyro_out[IMU_ROLL_IDX + gyro_offset] = (short)(tempShort);
-
-                        //Console.WriteLine($"IDX: ({i}) Accel: X({accel_raw[IMU_XAXIS_IDX]}) Y({accel_raw[IMU_YAXIS_IDX]}) Z({accel_raw[IMU_ZAXIS_IDX]})");
-                        //Console.WriteLine($"IDX: ({i}) Gyro: Yaw({gyro_raw[IMU_YAW_IDX + gyro_offset]}) Pitch({gyro_raw[IMU_PITCH_IDX + gyro_offset]}) Roll({gyro_raw[IMU_ROLL_IDX + gyro_offset]})");
-                        //Console.WriteLine($"IDX: ({i}) Gyro OUT: Yaw({gyro_out[IMU_YAW_IDX + gyro_offset]}) Pitch({gyro_out[IMU_PITCH_IDX + gyro_offset]}) Roll({gyro_out[IMU_ROLL_IDX + gyro_offset]})");
-                        //Console.WriteLine();
+                        cState.LX = inputReportBuffer[4];
+                        cState.LY = inputReportBuffer[5]; // Standard DInput: 0 is up, 255 is down
+                        cState.RX = inputReportBuffer[6];
+                        cState.RY = inputReportBuffer[7];
                     }
+                    else
+                    {
+                        tempByte = inputReportBuffer[3];
+                        cState.Circle = (tempByte & 0x08) != 0;
+                        cState.Cross = (tempByte & 0x04) != 0;
+                        cState.Triangle = (tempByte & 0x02) != 0;
+                        cState.Square = (tempByte & 0x01) != 0;
+                        cState.R1 = (tempByte & 0x40) != 0;
+                        cState.R2Btn = (tempByte & 0x80) != 0;
+                        cState.R2 = (byte)(cState.R2Btn ? 255 : 0);
+                        cState.R2Raw = cState.R2;
 
-                    // For Accel, just use most recent sampled values
-                    int accelX = accel_raw[IMU_XAXIS_IDX];
-                    int accelY = accel_raw[IMU_YAXIS_IDX];
-                    int accelZ = accel_raw[IMU_ZAXIS_IDX];
+                        tempByte = inputReportBuffer[4];
+                        cState.Share = (tempByte & 0x01) != 0;
+                        cState.Options = (tempByte & 0x02) != 0;
+                        cState.PS = (tempByte & 0x10) != 0;
+                        cState.Capture = (tempByte & 0x20) != 0;
+                        cState.L3 = (tempByte & 0x08) != 0;
+                        cState.R3 = (tempByte & 0x04) != 0;
 
-                    // Just use most recent sample for now
-                    int gyroYaw = (short)(-1 * (gyro_out[6 + IMU_YAW_IDX] - gyroBias[IMU_YAW_IDX] + gyroCalibOffsets[IMU_YAW_IDX]));
-                    int gyroPitch = (short)(gyro_out[6 + IMU_PITCH_IDX] - gyroBias[IMU_PITCH_IDX] - gyroCalibOffsets[IMU_PITCH_IDX]);
-                    int gyroRoll = (short)(gyro_out[6 + IMU_ROLL_IDX] - gyroBias[IMU_ROLL_IDX] - gyroCalibOffsets[IMU_ROLL_IDX]);
-                    //cState.Motion.populate(gyroYaw, gyroPitch, gyroRoll, accelX, accelY, accelZ, cState.elapsedTime, pState.Motion);
-                    
-                    // Need to populate the SixAxis object manually to work around conversions
-                    //Console.WriteLine("GyroYaw: {0}", gyroYaw);
-                    SixAxis tempMotion = cState.Motion;
-                    sixAxis.PrepareNonDS4SixAxis(ref gyroYaw, ref gyroPitch, ref gyroRoll,
-                        ref accelX, ref accelY, ref accelZ);
+                        tempByte = inputReportBuffer[5];
+                        cState.DpadUp = (tempByte & 0x02) != 0;
+                        cState.DpadDown = (tempByte & 0x01) != 0;
+                        cState.DpadLeft = (tempByte & 0x08) != 0;
+                        cState.DpadRight = (tempByte & 0x04) != 0;
+                        cState.L1 = (tempByte & 0x40) != 0;
+                        cState.L2Btn = (tempByte & 0x80) != 0;
+                        cState.L2 = (byte)(cState.L2Btn ? 255 : 0);
+                        cState.L2Raw = cState.L2;
 
-                    tempMotion.gyroYawFull = gyroYaw; tempMotion.gyroPitchFull = -gyroPitch; tempMotion.gyroRollFull = gyroRoll;
-                    tempMotion.accelXFull = accelX * 2; tempMotion.accelYFull = -accelZ * 2; tempMotion.accelZFull = -accelY * 2;
+                        stick_raw[0] = inputReportBuffer[6];
+                        stick_raw[1] = inputReportBuffer[7];
+                        stick_raw[2] = inputReportBuffer[8];
 
-                    tempMotion.elapsed = elapsedDeltaTime;
-                    tempMotion.previousAxis = pState.Motion;
-                    tempMotion.gyroYaw = gyroYaw / 256; tempMotion.gyroPitch = -gyroPitch / 256; tempMotion.gyroRoll = gyroRoll / 256;
-                    tempMotion.accelX = accelX / 31; tempMotion.accelY = -accelZ / 31; tempMotion.accelZ = -accelY / 31;
-                    //tempMotion.outputAccelX = tempMotion.accelX; tempMotion.outputAccelY = tempMotion.accelY; tempMotion.outputAccelZ = tempMotion.accelZ;
-                    tempMotion.outputAccelX = 0; tempMotion.outputAccelY = 0; tempMotion.outputAccelZ = 0;
-                    tempMotion.outputGyroControls = false;
-                    //Console.WriteLine(gyroRoll);
-                    tempMotion.accelXG = (accelX * 2) / DS4Windows.SixAxis.F_ACC_RES_PER_G;
-                    tempMotion.accelYG = (-accelZ * 2) / DS4Windows.SixAxis.F_ACC_RES_PER_G;
-                    tempMotion.accelZG = (-accelY * 2) / DS4Windows.SixAxis.F_ACC_RES_PER_G;
+                        tempAxis = (stick_raw[0] | ((stick_raw[1] & 0x0F) << 8)) - leftStickOffsetX;
+                        tempAxis = tempAxis > leftStickXData.max ? leftStickXData.max : (tempAxis < leftStickXData.min ? leftStickXData.min : tempAxis);
+                        cState.LX = (byte)((tempAxis - leftStickXData.min) / (double)(leftStickXData.max - leftStickXData.min) * 255);
 
-                    tempMotion.angVelYaw = gyroYaw * GYRO_IN_DEG_SEC_FACTOR;
-                    tempMotion.angVelPitch = -gyroPitch * GYRO_IN_DEG_SEC_FACTOR;
-                    tempMotion.angVelRoll = gyroRoll * GYRO_IN_DEG_SEC_FACTOR;
+                        tempAxis = ((stick_raw[1] >> 4) | (stick_raw[2] << 4)) - leftStickOffsetY;
+                        tempAxis = tempAxis > leftStickYData.max ? leftStickYData.max : (tempAxis < leftStickYData.min ? leftStickYData.min : tempAxis);
+                        cState.LY = (byte)((((tempAxis - leftStickYData.min) / (double)(leftStickYData.max - leftStickYData.min) - 0.5) * -1.0 + 0.5) * 255);
 
-                    SixAxisEventArgs args = new SixAxisEventArgs(cState.ReportTimeStamp, cState.Motion);
-                    sixAxis.FireSixAxisEvent(args);
+                        stick_raw2[0] = inputReportBuffer[9];
+                        stick_raw2[1] = inputReportBuffer[10];
+                        stick_raw2[2] = inputReportBuffer[11];
+
+                        tempAxis = (stick_raw2[0] | ((stick_raw2[1] & 0x0F) << 8)) - rightStickOffsetX;
+                        tempAxis = tempAxis > rightStickXData.max ? rightStickXData.max : (tempAxis < rightStickXData.min ? rightStickXData.min : tempAxis);
+                        cState.RX = (byte)((tempAxis - rightStickXData.min) / (double)(rightStickXData.max - rightStickXData.min) * 255);
+
+                        tempAxis = ((stick_raw2[1] >> 4) | (stick_raw2[2] << 4)) - rightStickOffsetY;
+                        tempAxis = tempAxis > rightStickYData.max ? rightStickYData.max : (tempAxis < rightStickYData.min ? rightStickYData.min : tempAxis);
+                        //cState.RY = (byte)((tempAxis - STICK_MIN) / (STICK_MAX - STICK_MIN) * 255);
+                        cState.RY = (byte)((((tempAxis - rightStickYData.min) / (double)(rightStickYData.max - rightStickYData.min) - 0.5) * -1.0 + 0.5) * 255);
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            int data_offset = i * 12;
+                            int gyro_offset = i * 3;
+                            accel_raw[IMU_XAXIS_IDX] = (short)((ushort)(inputReportBuffer[16 + data_offset] << 8) | inputReportBuffer[15 + data_offset]);
+                            accel_raw[IMU_YAXIS_IDX] = (short)((ushort)(inputReportBuffer[14 + data_offset] << 8) | inputReportBuffer[13 + data_offset]);
+                            accel_raw[IMU_ZAXIS_IDX] = (short)((ushort)(inputReportBuffer[18 + data_offset] << 8) | inputReportBuffer[17 + data_offset]);
+
+                            tempShort = gyro_raw[IMU_YAW_IDX + gyro_offset] = (short)((ushort)(inputReportBuffer[24 + data_offset] << 8) | inputReportBuffer[23 + data_offset]);
+                            //gyro_out[IMU_YAW_IDX + gyro_offset] = (short)(tempShort - device.gyroBias[IMU_YAW_IDX]);
+                            gyro_out[IMU_YAW_IDX + gyro_offset] = (short)(tempShort);
+
+                            tempShort = gyro_raw[IMU_PITCH_IDX + gyro_offset] = (short)((ushort)(inputReportBuffer[22 + data_offset] << 8) | inputReportBuffer[21 + data_offset]);
+                            //gyro_out[IMU_PITCH_IDX + gyro_offset] = (short)(tempShort - device.gyroBias[IMU_PITCH_IDX]);
+                            gyro_out[IMU_PITCH_IDX + gyro_offset] = (short)(tempShort);
+
+                            tempShort = gyro_raw[IMU_ROLL_IDX + gyro_offset] = (short)((ushort)(inputReportBuffer[20 + data_offset] << 8) | inputReportBuffer[19 + data_offset]);
+                            //gyro_out[IMU_ROLL_IDX + gyro_offset] = (short)(tempShort - device.gyroBias[IMU_ROLL_IDX]);
+                            gyro_out[IMU_ROLL_IDX + gyro_offset] = (short)(tempShort);
+
+                            //Console.WriteLine($"IDX: ({i}) Accel: X({accel_raw[IMU_XAXIS_IDX]}) Y({accel_raw[IMU_YAXIS_IDX]}) Z({accel_raw[IMU_ZAXIS_IDX]})");
+                            //Console.WriteLine($"IDX: ({i}) Gyro: Yaw({gyro_raw[IMU_YAW_IDX + gyro_offset]}) Pitch({gyro_raw[IMU_PITCH_IDX + gyro_offset]}) Roll({gyro_raw[IMU_ROLL_IDX + gyro_offset]})");
+                            //Console.WriteLine($"IDX: ({i}) Gyro OUT: Yaw({gyro_out[IMU_YAW_IDX + gyro_offset]}) Pitch({gyro_out[IMU_PITCH_IDX + gyro_offset]}) Roll({gyro_out[IMU_ROLL_IDX + gyro_offset]})");
+                            //Console.WriteLine();
+                        }
+
+                        // For Accel, just use most recent sampled values
+                        int accelX = accel_raw[IMU_XAXIS_IDX];
+                        int accelY = accel_raw[IMU_YAXIS_IDX];
+                        int accelZ = accel_raw[IMU_ZAXIS_IDX];
+
+                        // Just use most recent sample for now
+                        int gyroYaw = (short)(-1 * (gyro_out[6 + IMU_YAW_IDX] - gyroBias[IMU_YAW_IDX] + gyroCalibOffsets[IMU_YAW_IDX]));
+                        int gyroPitch = (short)(gyro_out[6 + IMU_PITCH_IDX] - gyroBias[IMU_PITCH_IDX] - gyroCalibOffsets[IMU_PITCH_IDX]);
+                        int gyroRoll = (short)(gyro_out[6 + IMU_ROLL_IDX] - gyroBias[IMU_ROLL_IDX] - gyroCalibOffsets[IMU_ROLL_IDX]);
+                        //cState.Motion.populate(gyroYaw, gyroPitch, gyroRoll, accelX, accelY, accelZ, cState.elapsedTime, pState.Motion);
+                        
+                        // Need to populate the SixAxis object manually to work around conversions
+                        //Console.WriteLine("GyroYaw: {0}", gyroYaw);
+                        SixAxis tempMotion = cState.Motion;
+                        sixAxis.PrepareNonDS4SixAxis(ref gyroYaw, ref gyroPitch, ref gyroRoll,
+                            ref accelX, ref accelY, ref accelZ);
+
+                        tempMotion.gyroYawFull = gyroYaw; tempMotion.gyroPitchFull = -gyroPitch; tempMotion.gyroRollFull = gyroRoll;
+                        tempMotion.accelXFull = accelX * 2; tempMotion.accelYFull = -accelZ * 2; tempMotion.accelZFull = -accelY * 2;
+
+                        tempMotion.elapsed = elapsedDeltaTime;
+                        tempMotion.previousAxis = pState.Motion;
+                        tempMotion.gyroYaw = gyroYaw / 256; tempMotion.gyroPitch = -gyroPitch / 256; tempMotion.gyroRoll = gyroRoll / 256;
+                        tempMotion.accelX = accelX / 31; tempMotion.accelY = -accelZ / 31; tempMotion.accelZ = -accelY / 31;
+                        //tempMotion.outputAccelX = tempMotion.accelX; tempMotion.outputAccelY = tempMotion.accelY; tempMotion.outputAccelZ = tempMotion.accelZ;
+                        tempMotion.outputAccelX = 0; tempMotion.outputAccelY = 0; tempMotion.outputAccelZ = 0;
+                        tempMotion.outputGyroControls = false;
+                        //Console.WriteLine(gyroRoll);
+                        tempMotion.accelXG = (accelX * 2) / DS4Windows.SixAxis.F_ACC_RES_PER_G;
+                        tempMotion.accelYG = (-accelZ * 2) / DS4Windows.SixAxis.F_ACC_RES_PER_G;
+                        tempMotion.accelZG = (-accelY * 2) / DS4Windows.SixAxis.F_ACC_RES_PER_G;
+
+                        tempMotion.angVelYaw = gyroYaw * GYRO_IN_DEG_SEC_FACTOR;
+                        tempMotion.angVelPitch = -gyroPitch * GYRO_IN_DEG_SEC_FACTOR;
+                        tempMotion.angVelRoll = gyroRoll * GYRO_IN_DEG_SEC_FACTOR;
+
+                        SixAxisEventArgs args = new SixAxisEventArgs(cState.ReportTimeStamp, cState.Motion);
+                        sixAxis.FireSixAxisEvent(args);
+                    }
 
                     if (conType == ConnectionType.USB)
                     {
@@ -996,6 +1037,9 @@ namespace DS4Windows.InputDevices
             //Console.WriteLine(string.Join(",", tmpBuffer));
             //Console.WriteLine(tmpBuffer[SPI_RESP_OFFSET]);
             //Console.WriteLine();
+            if(isPowerA){
+                return;
+            }
 
             bool foundUserCalib = false;
             command = new byte[] { 0x10, 0x80, 0x00, 0x00, 0x02 };
