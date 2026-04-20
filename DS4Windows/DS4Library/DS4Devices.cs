@@ -132,6 +132,7 @@ namespace DS4Windows
         internal const int NACON_VID = 0x146B;
         internal const int HORI_VID = 0x0F0D;
         internal const int NINTENDO_VENDOR_ID = 0x57e;
+        internal const int POWER_A_VENDOR_ID = 0x20D6;
         internal const int SWITCH_PRO_PRODUCT_ID = 0x2009;
         internal const int JOYCON_L_PRODUCT_ID = 0x2006;
         internal const int JOYCON_R_PRODUCT_ID = 0x2007;
@@ -180,7 +181,8 @@ namespace DS4Windows
             new VidPidInfo(NINTENDO_VENDOR_ID, JOYCON_CHARGING_GRIP_PRODUCT_ID, "JoyCon (Grip)", InputDeviceType.JoyConGrip, VidPidFeatureSet.DefaultDS4, checkConnection: JoyConDevice.DetermineConnectionType),
             new VidPidInfo(0x7545, 0x1122, "Gioteck VX4", InputDeviceType.DS4), // Gioteck VX4 (no real lightbar, only some RGB leds)
             new VidPidInfo(0x7331, 0x0001, "DualShock 3 (DS4 Emulation)", InputDeviceType.DS4, VidPidFeatureSet.NoGyroCalib | VidPidFeatureSet.VendorDefinedDevice), // Sony DualShock 3 using DsHidMini driver. DsHidMini uses vendor-defined HID device type when it's emulating DS3 using DS4 button layout
-            new VidPidInfo(0x20D6, 0x792A, "PowerA FUSION Wired Fightpad for PS4", InputDeviceType.DS4, VidPidFeatureSet.NoGyroCalib), // No lightbar, gyro, or sticks
+            new VidPidInfo(POWER_A_VENDOR_ID, 0x792A, "PowerA FUSION Wired Fightpad for PS4", InputDeviceType.DS4, VidPidFeatureSet.NoGyroCalib), // No lightbar, gyro, or sticks
+            new VidPidInfo(POWER_A_VENDOR_ID, 0xA711, "PowerA Wired Controller for Nintendo Switch", InputDeviceType.SwitchPro, VidPidFeatureSet.DefaultDS4, checkConnection: SwitchProDevice.DetermineConnectionType),
             new VidPidInfo(0x044F, 0xD00E, "Thrustmaster eSwap Pro", InputDeviceType.DS4, VidPidFeatureSet.NoGyroCalib | VidPidFeatureSet.NoBatteryReading), // Thrustmaster eSwap Pro (wired only. No lightbar or gyro)
             new VidPidInfo(0x054C, 0x0268, "DualShock 3 (SXS)", InputDeviceType.DS3, VidPidFeatureSet.DefaultDS4, checkConnection: DS3Device.DetermineConnectionType), // Sony DualShock 3 using DsHidMini driver (SXS) or Sony Sixaxis driver
             new VidPidInfo(0x0C12, 0x0E15, "Playmax Wired Controller (PS4)", InputDeviceType.DS4, VidPidFeatureSet.NoBatteryReading | VidPidFeatureSet.NoGyroCalib), // Generic PS4 Controller by Playmax (brand primarily in New Zealand). Standard Wired PS4 controller, no Gyro, no Lightbar, no Battery. There is a newer model but I'm not sure if it uses a different Vid or Pid yet.
