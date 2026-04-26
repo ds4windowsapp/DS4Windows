@@ -3292,8 +3292,8 @@ namespace DS4Windows
 
     public class Changelog
     {
-        public const string GITHUB_RELEASES_API_URI = "https://api.github.com/repos/schmaldeo/DS4Windows/releases";
-        public const string GITHUB_LATEST_RELEASE_API_URI = "https://api.github.com/repos/schmaldeo/DS4Windows/releases/latest";
+        public const string GITHUB_RELEASES_API_URI = "https://api.github.com/repos/ds4windowsapp/DS4Windows/releases";
+        public const string GITHUB_LATEST_RELEASE_API_URI = "https://api.github.com/repos/ds4windowsapp/DS4Windows/releases/latest";
 
         private static bool? _newerVersionAvailable = null;
         private static Version _latestVersion;

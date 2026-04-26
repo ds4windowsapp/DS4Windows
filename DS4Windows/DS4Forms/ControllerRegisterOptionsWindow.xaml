@@ -26,7 +26,7 @@
                 <CheckBox Content="{lex:Loc AdvancedSupport}" IsChecked="{Binding UseAdvancedMoonlight}"
                           Visibility="{Binding Path=UseMoonlight, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="20 0 0 0"/>
                 <TextBlock>
-                    <Hyperlink NavigateUri="https://github.com/schmaldeo/DS4Windows/blob/moonlight/doc/moonlight_support.md"
+                    <Hyperlink NavigateUri="https://github.com/ds4windowsapp/DS4Windows/blob/main/doc/moonlight_support.md"
                                RequestNavigate="Hyperlink_RequestNavigate">
                         About virtual controller support
                     </Hyperlink>
