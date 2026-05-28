@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -124,7 +124,7 @@
     <value>Действие</value>
   </data>
   <data name="AddDirectory" xml:space="preserve">
-    <value>Добавить каталог</value>
+    <value>Добавить библиотеку</value>
   </data>
   <data name="AddPrograms" xml:space="preserve">
     <value>Добавить программы</value>
@@ -154,7 +154,7 @@
     <value>Отмена</value>
   </data>
   <data name="CheckUpdateNow" xml:space="preserve">
-    <value>Проверка обновлений</value>
+    <value>Проверить обновления</value>
   </data>
   <data name="CheckUpdateStartup" xml:space="preserve">
     <value>Проверка обновлений DS4Windows при запуске</value>
@@ -181,7 +181,7 @@
     <value>Контроллер 4</value>
   </data>
   <data name="Controllers" xml:space="preserve">
-    <value>Контроллеры</value>
+    <value>Контроллер</value>
   </data>
   <data name="ControlPanel" xml:space="preserve">
     <value>Панель управления</value>
@@ -190,7 +190,7 @@
     <value>Удалить</value>
   </data>
   <data name="DriverSetup" xml:space="preserve">
-    <value>Настройка драйвера контроллера</value>
+    <value>Настройка драйвера/контроллера</value>
   </data>
   <data name="Duplicate" xml:space="preserve">
     <value>Дублировать</value>
@@ -223,7 +223,7 @@
     <value>Журнал</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Название</value>
+    <value>Имя</value>
   </data>
   <data name="New" xml:space="preserve">
     <value>Новый</value>
@@ -253,10 +253,10 @@
     <value>Запись</value>
   </data>
   <data name="Remove" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Убрать</value>
   </data>
   <data name="RemoveAction" xml:space="preserve">
-    <value>Удалить действие</value>
+    <value>Убрать действие</value>
   </data>
   <data name="RightStick" xml:space="preserve">
     <value>Правый стик</value>
@@ -316,37 +316,44 @@
     <value>Заголовок окна</value>
   </data>
   <data name="MoveUp" xml:space="preserve">
-    <value>Move Up</value>
+    <value>Движение Вверх</value>
   </data>
   <data name="MoveDown" xml:space="preserve">
-    <value>Move Down</value>
+    <value>Движение Вниз</value>
   </data>
   <data name="AutoProfPathTip" xml:space="preserve">
-    <value>Process path. ^ABC = Match at the beginning of string (^) | ABC$ = Match at the end of string ($) | *ABC =Contains a string (*)</value>
+    <value>Путь обработки. ^ABC = Совпадение в начале строки (^) | ABC$ = Совпадение в конце строки ($) | *ABC = Содержит строку (*)</value>
   </data>
   <data name="AutoProfTitleTip" xml:space="preserve">
-    <value>Window title. ^ABC = Match at the beginning of string (^) | ABC$ = Match at the end of string ($) | *ABC =Contains a string (*)</value>
+    <value>Заголовок окна. ^ABC = Совпадение в начале строки (^) | ABC$ =Совпадение в конце строки ($) | *ABC = Содержит строку (*)</value>
   </data>
   <data name="GamepadTest" xml:space="preserve">
     <value>Тест геймпада</value>
-    <comment>settings tab&gt;utils</comment>
+  </data>
+  <data name="EnableOutputDataToDS4" xml:space="preserve">
+    <value>Включить вывод данных на DS4</value>
+  </data>
+  <data name="EnableOutputDataToDS4Tip" xml:space="preserve">
+    <value>Периодически передавайте данные о световой панели и вибрации на геймпад DS4. Снимите флажок, если геймпад не поддерживает прием данных.
+Изменения в этом параметре вступают в силу в момент подключения геймпада.</value>
+    <comment>To enter a line break into a string resource value in VisualStudio resource editor press Shift+Enter.</comment>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>Применить</value>
-    <comment>Profiles&gt;Edit&gt;Apply
-(button)</comment>
+  </data>
+  <data name="HidNinja" xml:space="preserve">
+    <value>HidNinja</value>
   </data>
   <data name="CustomExeName" xml:space="preserve">
-    <value>Настраиваемое имя Exe</value>
-    <comment>Settings tab
-(string)</comment>
+    <value>Кастомное имя Exe</value>
   </data>
   <data name="CustomExeNameInfo" xml:space="preserve">
-    <value>Некоторые игры встроили блок, который приводит к игнорированию ввода DS4, если игра обнаруживает, что в это время запущен DS4Windows.exe или InputMapper.exe. Обходной путь к блокировке - переименовать DS4Windows.exe, чтобы проверка в игре не прошла. Указание настраиваемого имени exe-файла позволяет DS4Updater автоматически обновлять настраиваемую копию DS4Windows до желаемого имени файла. Обязательно уберите расширение.
+    <value>В некоторых играх реализована блокировка, из-за которой ввод с DS4 игнорируется, если игра обнаруживает запущенный файл DS4Windows.exe или InputMapper.exe. Обходной путь для этой блокировки - переименовать DS4Windows.exe. Указав своё имя исполняемого файла позволяет DS4Updater автоматически обновить пользовательскую копию DS4Windows, присвоив ей нужное имя. Обязательно укажите отсутствие расширения.
 
 Пример: whyme_DS4Windows</value>
-    <comment>Settings tab
-(help button)</comment>
+  </data>
+  <data name="XInputChecker" xml:space="preserve">
+    <value>XInputChecker</value>
   </data>
   <data name="Controller5Text" xml:space="preserve">
     <value>Контроллер 5</value>
@@ -360,133 +367,92 @@
   <data name="Controller8Text" xml:space="preserve">
     <value>Контроллер 8</value>
   </data>
+  <data name="GamepadGyroCameraDescription" xml:space="preserve">
+    <value>Настраивает вывод сигнала контроллера на стандартный геймпад XInput или геймпад DS4. Гироскоп настраивается на джойстик, похожий на мышь.</value>
+  </data>
+  <data name="GamepadGyroCameraName" xml:space="preserve">
+    <value>Геймпад с Джойстиком похожий на Мышь</value>
+  </data>
+  <data name="GamepadPresetDescription" xml:space="preserve">
+    <value>Преобразует вывод сигнала контроллера в сигнал стандартного геймпада.</value>
+  </data>
   <data name="GamepadPresetName" xml:space="preserve">
     <value>Геймпад</value>
-    <comment>preset name</comment>
+  </data>
+  <data name="KBMGyroMouseDescription" xml:space="preserve">
+    <value>Сопоставляет вывод контроллера с виртуальными элементами управления клавиатуры и мыши. Полезно для игр в жанре Шутер, не поддерживающих геймпад. Гироскоп сопоставляется с виртуальной мышью.</value>
+  </data>
+  <data name="KBMGyroMouseName" xml:space="preserve">
+    <value>Управл. Клав.+ Мышь с Гироскопом</value>
+  </data>
+  <data name="KBMPresetDescription" xml:space="preserve">
+    <value>Сопоставляет вывод контроллера с виртуальными элементами управления клавиатуры и мыши. Полезно для игр в жанре Шутер, не поддерживающих геймпад.</value>
+  </data>
+  <data name="KBMPresetName" xml:space="preserve">
+    <value>Управл. Клав.+ Мышь</value>
+  </data>
+  <data name="MixedGyroMousePresetDescription" xml:space="preserve">
+    <value>Назначает кнопки и оси стандартному геймпаду. Назначает гироскоп виртуальной мыши.</value>
+  </data>
+  <data name="MixedGyroMousePresetName" xml:space="preserve">
+    <value>Геймпад с Гироскопич. Мышью</value>
+  </data>
+  <data name="MixedPresetDescription" xml:space="preserve">
+    <value>Преобразует вывод контроллера в смешанный поток XInput + RS мышь.</value>
+  </data>
+  <data name="MixedPresetName" xml:space="preserve">
+    <value>Геймпад с Высокоточной Камерой</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
-    <comment>Profiles tab&gt;Select Preset</comment>
   </data>
   <data name="PresetIntroText" xml:space="preserve">
-    <value>Вы хотите использовать предустановленный вариант? При выборе «Нет» редактор профиля будет использовать пустой профиль геймпада.</value>
-    <comment>Profiles tab&gt;Select Preset</comment>
+    <value>Вы хотите использовать предустановленные опции? Если выбрать "Нет", Редактор Профилей будет использовать пустой профиль Геймпада.</value>
   </data>
   <data name="Presets" xml:space="preserve">
     <value>Пресеты</value>
-    <comment>Profiles tab&gt;Select Preset</comment>
   </data>
   <data name="Changelog" xml:space="preserve">
-    <value>Журнал изменений</value>
-    <comment>settings tab&gt;utils</comment>
+    <value>Список изменений</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Закрыть</value>
-    <comment>Changelog window
-(button)</comment>
   </data>
   <data name="Profiles" xml:space="preserve">
     <value>Профили</value>
-    <comment>Main tab</comment>
   </data>
   <data name="NoControllersConnected" xml:space="preserve">
-    <value>Контроллеры не подключены (Максимум {0})</value>
-    <comment>Controllers tab
-(if controllers are disabled)</comment>
-  </data>
-  <data name="EnableOutputDataToDS4" xml:space="preserve">
-    <value>Включить вывод данных в DS4</value>
-    <comment>Profiles tab&gt;edit&gt;Other</comment>
-  </data>
-  <data name="EnableOutputDataToDS4Tip" xml:space="preserve">
-    <value>Периодически выводить данные световой панели и вибрации на геймпад DS4. Снимите флажок, если геймпад не поддерживает прием данных.
-Изменения этого параметра вступают в силу во время подключения геймпада.</value>
-    <comment>To enter a line break into a string resource value in VisualStudio resource editor press Shift+Enter.</comment>
-  </data>
-  <data name="XInputChecker" xml:space="preserve">
-    <value>Проверка XInput</value>
-    <comment>settings tab&gt;utils</comment>
-  </data>
-  <data name="HidNinja" xml:space="preserve">
-    <value>HidNinja</value>
-  </data>
-  <data name="GamepadGyroCameraDescription" xml:space="preserve">
-    <value>Maps the controller output to a standard XInput gamepad or DS4 pad. Gyro is mapped to a Mouse-like Joystick.</value>
-    <comment>Description</comment>
-  </data>
-  <data name="GamepadGyroCameraName" xml:space="preserve">
-    <value>Gamepad with Mouse-like Joystick</value>
-    <comment>preset name</comment>
-  </data>
-  <data name="GamepadPresetDescription" xml:space="preserve">
-    <value>Maps the controller output to a standard gamepad</value>
-    <comment>Description</comment>
-  </data>
-  <data name="KBMGyroMouseDescription" xml:space="preserve">
-    <value>Maps the controller output to virtual KB+M controls. Useful for playing FPS games with no gamepad support. Gyro is mapped to a virtual Mouse.</value>
-    <comment>Description</comment>
-  </data>
-  <data name="KBMGyroMouseName" xml:space="preserve">
-    <value>KB+M Controls with Gyro Mouse</value>
-    <comment>preset name</comment>
-  </data>
-  <data name="KBMPresetDescription" xml:space="preserve">
-    <value>Maps the controller output to virtual KB+M controls. Useful for playing FPS games with no gamepad support.</value>
-    <comment>Description</comment>
-  </data>
-  <data name="KBMPresetName" xml:space="preserve">
-    <value>KB+M Controls</value>
-    <comment>preset name</comment>
-  </data>
-  <data name="MixedGyroMousePresetDescription" xml:space="preserve">
-    <value>Maps the buttons and axes to a standard gamepad. Maps the Gyro to a virtual mouse</value>
-    <comment>Description</comment>
-  </data>
-  <data name="MixedGyroMousePresetName" xml:space="preserve">
-    <value>Gamepad with Gyro Mouse</value>
-    <comment>preset name</comment>
-  </data>
-  <data name="MixedPresetDescription" xml:space="preserve">
-    <value>Maps the controller output to mixed XInput gamepad + RS mouse.</value>
-    <comment>Description</comment>
-  </data>
-  <data name="MixedPresetName" xml:space="preserve">
-    <value>Gamepad with High Precision Camera</value>
-    <comment>preset name</comment>
+    <value>Контроллеры не подключены (Max {0})</value>
   </data>
   <data name="FlickThreshold" xml:space="preserve">
-    <value>Flick Threshold</value>
-    <comment>Profiles tab&gt;Edit&gt;Axis Config&gt;Flick Stick</comment>
+    <value>Порог флика</value>
   </data>
   <data name="FlickTime" xml:space="preserve">
-    <value>Flick Time</value>
-    <comment>Profiles tab&gt;Edit&gt;Axis Config&gt;Flick Stick</comment>
+    <value>Время флика</value>
   </data>
   <data name="MinAngleThreshold" xml:space="preserve">
-    <value>Min Angle Threshold</value>
-    <comment>Profiles tab&gt;Edit&gt;Axis Config&gt;Flick Stick</comment>
+    <value>Миним. угол порога</value>
   </data>
   <data name="RealWorldCalibration" xml:space="preserve">
-    <value>Real World Calibration</value>
-    <comment>Profiles tab&gt;Edit&gt;Axis Config&gt;Flick Stick</comment>
+    <value>Калибровка в реальных условиях</value>
   </data>
   <data name="ViGEmPluginFailure" xml:space="preserve">
-    <value>Подключение устройства ViGEm не удалось. Вероятно, внутренняя проблема ViGEmBus. Закрытие соединения. Если проблема не устранена, закройте DS4Windows, а затем запустите приложение PurgeOldXInput из папки Tools. Также может потребоваться перезагрузка Windows.</value>
+    <value>Сбой подключения плагина ViGEm устройства. Код ошибки {0}. Вероятно, внутренняя проблема ViGEmBus. Закрытие соединения. Если проблема сохраняется, закройте DS4Windows и перезагрузите Windows.</value>
   </data>
   <data name="CRC32Fail" xml:space="preserve">
-    <value>Сбой проверки целостности данных для беспроводного устройства. Закрытие устройства.</value>
+    <value>Проверка целостности данных беспроводного устройства не пройдена. Закрытие Устройства.</value>
   </data>
   <data name="FutureNetNotInstalled" xml:space="preserve">
-    <value>Среда выполнения .NET 5 не была обнаружена в вашей системе. Пожалуйста, загрузите и установите среду выполнения .NET 5, чтобы обеспечить совместимость с будущими сборками DS4Windows. После закрытия этого окна вы будете перенаправлены на страницу загрузки среды выполнения .NET 5.</value>
+    <value>В вашей системе не обнаружена .NET 5 Runtime. Пожалуйста, загрузите и установите .NET 5 Runtime, чтобы обеспечить совместимость с будущими сборками DS4Windows. После закрытия этого окна вы будете перенаправлены на страницу загрузки .NET 5 Runtime.</value>
   </data>
   <data name="UpgradeNetCaption" xml:space="preserve">
-    <value>Пожалуйста, обновите среду выполнения .NET</value>
+    <value>Пожалуйста, обновите .NET Runtime</value>
   </data>
   <data name="HidHide" xml:space="preserve">
     <value>HidHide</value>
   </data>
   <data name="HidHideConfigClient" xml:space="preserve">
-    <value>Клиент конфигурации HidHide</value>
+    <value>HidHide настройки клиента</value>
   </data>
   <data name="ExclusiveAccess" xml:space="preserve">
     <value>Эксклюзивный доступ</value>
@@ -499,6 +465,138 @@
   </data>
   <data name="SharedAccess" xml:space="preserve">
     <value>Общий доступ</value>
+  </data>
+  <data name="RenameProfile" xml:space="preserve">
+    <value>Переименовать</value>
+  </data>
+  <data name="DisableVirtualController" xml:space="preserve">
+    <value>Отключить виртуальный контроллер</value>
+  </data>
+  <data name="DisableVirtualControllerTip" xml:space="preserve">
+    <value>Не создавайте/не связывайте виртуальные контроллеры для подключенных контроллеров, использующих этот профиль (применяется при сохранении профиля).</value>
+  </data>
+  <data name="EmulatedController" xml:space="preserve">
+    <value>Эмулированный контроллер</value>
+  </data>
+  <data name="OutContNotice" xml:space="preserve">
+    <value>Выберите тип выходного виртуального контроллера (применяется при сохранении профиля).</value>
+  </data>
+  <data name="VirtualControllerSettings" xml:space="preserve">
+    <value>Настройки Виртуального Контроллера</value>
+  </data>
+  <data name="ChangeOnNewDeviceConn" xml:space="preserve">
+    <value>Изменения вступают в силу при подключении нового устройства.</value>
+  </data>
+  <data name="StickFuzzTooltip" xml:space="preserve">
+    <value>Параметр Фузз задает минимальное количество единиц, при котором перемещается обычный джойстик в активном режиме, прежде чем выходной сигнал будет зарегистрирован как изменение положения. Этот параметр может использоваться для изношенных джойстиков, которые не могут постоянно поддерживать положение. Значение выражается в движении джойстика.</value>
+  </data>
+  <data name="StickMaxOutputForceTooltip" xml:space="preserve">
+    <value>Всегда устанавливайте максимальный уровень выходного сигнала. Это полезно для 100% максимального выходного сигнала и ограничения значения циклическим значением выходного сигнала.</value>
+  </data>
+  <data name="StickMaxOutputTooltip" xml:space="preserve">
+    <value>В некоторых ситуациях может быть полезно ограничить максимальное значение, выводимое аналоговым джойстиком. Параметр Максимальный Вывод позволяет регулировать конечное выходное значение аналогового джойстика.</value>
+  </data>
+  <data name="AntiDeadzoneTooltip" xml:space="preserve">
+    <value>Сглаживающая мертвая зона служит смещением для оси, обозначающим минимальное выходное значение, генерируемое после того, как ось покинет свою назначенную мертвую зону. Это в основном предназначено для сопоставления оси с назначенным значением мертвой зоны, используемым для оси в видеоигре. Например, типичная назначенная мертвая зона для XInput LS в видеоигре составляет около 8000 (25%). Без назначенной сглаживающей мертвой зоны ось должна была бы выйти за пределы назначенной мертвой зоны в DS4Windows вместе с назначенной игре мертвой зоной оси.</value>
+  </data>
+  <data name="StickInputCurveTooltip" xml:space="preserve">
+    <value>УСТАРЕВШАЯ НАСТРОЙКА. Попытка применить кривую на основе исходных координат до применения информации о мертвой зоне. Некорректно.</value>
+  </data>
+  <data name="TouchpadMinThresholdTooltip" xml:space="preserve">
+    <value>Минимальное расчетное перемещение Мыши до отправки события  в систему.</value>
+  </data>
+  <data name="TouchpadRotationTooltip" xml:space="preserve">
+    <value>Регулирует угол поворота свайпа на тачпада. Полезно, когда обычный свайп на тачпаде не представляет собой прямую линию. Допустимые значения находятся в диапазоне от -180 до 180. Значение по умолчанию — 0.</value>
+  </data>
+  <data name="TouchpadSlideTooltip" xml:space="preserve">
+    <value>Чувствительность используется для активации действия Прокрутки Колесика Мыши при одновременном нажатии.</value>
+  </data>
+  <data name="TouchpadTapTooltip" xml:space="preserve">
+    <value>Активируйте левую кнопку мыши касанием сенсорной панели. Максимальный временной интервал установлен (значению * 2) мс.</value>
+  </data>
+  <data name="TouchpadTrackballEnableTooltip" xml:space="preserve">
+    <value>Добавляет инерцию при проведении пальцем по тачпаду после отпускания пальца. Обеспечивает дополнительное перемещение курсора мыши, которое было бы невозможно при ограниченном пространстве Тачпада.</value>
+  </data>
+  <data name="TouchpadTrackballFrictionTooltip" xml:space="preserve">
+    <value>Добавьте трение к виртуальному Трекболу. Уменьшение трения увеличит конечное время перемещения курсора мыши.</value>
+  </data>
+  <data name="StickOuterBindDeadTooltip" xml:space="preserve">
+    <value>Пороговое значение, при котором будет выполнено действие</value>
+  </data>
+  <data name="StickOuterBindInvertTooltip" xml:space="preserve">
+    <value>Внешняя привязка должна сработать до достижения порогового значения. Действие прекращается после превышения порогового значения.</value>
+  </data>
+  <data name="StickOuterBindTooltip" xml:space="preserve">
+    <value>Действие, выполняемое при превышении порогового значения перемещения джойстика. Полезно для назначения клавиш для действий Ходьба или Спринт. Инвертирование приводит к выполнению действия до достижения порогового значения.</value>
+  </data>
+  <data name="SASteeringWheelFuzzTooltip" xml:space="preserve">
+    <value>Фузз задает минимальное количество единиц устройства в активной зоне, на которое необходимо повернуть Аксель, прежде чем выходной сигнал будет зарегистрирован как измененный. Значение выражается в необработанных единицах Аксель.</value>
+  </data>
+  <data name="StickRotationTooltip" xml:space="preserve">
+    <value>+ = По часовой. - = Против-часовой.
+
+Параметр поворота предназначен для коррекции ориентации аналогового джойстика, если ваш большой палец слегка смещен при его перемещении. Например, ваш большой палец может быть немного смещен от центра, когда аналоговый джойстик полностью повернут вверх. Мои большие пальцы слегка смещаются вправо при полном повороте аналогового джойстика вверх из-за того, как я держу DS4. Используемое значение обозначает количество градусов, используемых для корректировки конечного выходного значения оси. Допустимые значения находятся в диапазоне от -180 до 180. Значение по умолчанию — 0.</value>
+  </data>
+  <data name="TouchpadJitterCompTooltip" xml:space="preserve">
+    <value>Ограничивает движение Тачпада в нижнем диапазоне. Снижает вероятность случайного перемещения курсора мыши при удержании практически неподвижного положения на Тачпаде.</value>
+  </data>
+  <data name="DS4BTPollRate" xml:space="preserve">
+    <value>DS4 BT Уровень Опроса</value>
+  </data>
+  <data name="DS4LightbarPassthruDisabled" xml:space="preserve">
+    <value>В настоящее время эта функция отключена в приложении из-за проблем с драйверами. Надеемся, что проблемы будут исправлены в будущем обновлении.</value>
+  </data>
+  <data name="DualSRumbleForceGenericRescale" xml:space="preserve">
+    <value>Использование % на обоих уровнях силы (Общие и уникальные DualSense)</value>
+  </data>
+  <data name="DualSRumbleModeDisabled" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="DualSRumbleModeAccurate" xml:space="preserve">
+    <value>Точная</value>
+  </data>
+  <data name="DualSRumbleModeLegacy" xml:space="preserve">
+    <value>Устаревшая</value>
+  </data>
+  <data name="DualSRumbleModeNPowerLevelTxt" xml:space="preserve">
+    <value>Режим и уровень вибрации:</value>
+  </data>
+  <data name="DualSRumbleModePassthru" xml:space="preserve">
+    <value>Передача</value>
+  </data>
+  <data name="DualSRumbleSpecificSettings" xml:space="preserve">
+    <value>Специальные настройки вибрации для DualSense</value>
+  </data>
+  <data name="DualSRumbleForceGenericRescale_Tip" xml:space="preserve">
+    <value>Рекомендуется оставить левый - ОТКЛЮЧЕННЫМ.
+
+- Отключено: вибрация будет автоматически масштабироваться контроллером в соответствии с заданным уровнем мощности (лучшее качество).
+
+- Включено: будут активны как стандартное масштабирование вибрации DS4Windows, так и встроенное управление DualSense.</value>
+  </data>
+  <data name="DualSRumbleModes_Tip" xml:space="preserve">
+    <value>Режим точности (рекомендуется):
+- Более точно имитирует вибрацию контроллеров DualShock 4/Xbox 360
+- Более точно воспроизводит задуманные в игре эффекты вибрации
+- Вибрация обладает большей глубиной. При одинаковом уровне мощности наблюдается большая разница между минимальным и максимальным уровнем активации вибрация в игре,
+варьируется от очень низкого до максимальной мощности заданного уровня.
+
+Режим Устаревший:
+- В целом сильнее, но ему не хватает глубины
+- Ощущение "более резкое"
+- Минимальное и максимальное значения активации в игре будут, соответственны, лишь немного ниже и немного выше выбранного уровня силы
+
+Отключено:
+- Полностью отключает вибрацию</value>
+  </data>
+  <data name="DualSRumblePowerLevel_Tip" xml:space="preserve">
+    <value>Ремасштабирующийся Уровень Силы встроенный в DualSense.
+
+- Когда в Режим Точности, вибрация [ min // max ] будет [ 1% /// Выбранный уровень мощности ]
+    - Пример (62%): [ min = 1% /// max = 62% ]
+
+- Когда в Устаревшем Режиме, вибрация [мин /// макс ] будет примерно [ Уровень Мощности - 12% /// Уровень Мощности + 12% ]
+    - Пример (62%): [ min = 50% /// max = 74% ]</value>
   </data>
   <data name="Accept" xml:space="preserve">
     <value>Принять</value>
@@ -548,9 +646,6 @@
   <data name="Plug" xml:space="preserve">
     <value>Подключить</value>
   </data>
-  <data name="RenameProfile" xml:space="preserve">
-    <value>Переименовать</value>
-  </data>
   <data name="RevertToDefaultProfileOnUnknown" xml:space="preserve">
     <value>Вернуть профиль по умолчанию на неизвестном</value>
   </data>
@@ -574,6 +669,18 @@
   </data>
   <data name="CheckEvery" xml:space="preserve">
     <value>Проверять каждые</value>
+  </data>
+  <data name="OscServerHeading" xml:space="preserve">
+    <value>Внешнее управление OSC и Мониторинг</value>
+  </data>
+  <data name="EnableOscServer" xml:space="preserve">
+    <value>Включить сервер управления</value>
+  </data>
+  <data name="EnableInterpretingOscMonitoring" xml:space="preserve">
+    <value>Перехват сообщений мониторинга</value>
+  </data>
+  <data name="EnableOscSender" xml:space="preserve">
+    <value>Включить службу мониторинга</value>
   </data>
   <data name="ControllerSupportDS4" xml:space="preserve">
     <value>Поддержка контроллера DS4</value>
@@ -614,17 +721,8 @@
   <data name="Hours" xml:space="preserve">
     <value>Часов</value>
   </data>
-  <data name="Program" xml:space="preserve">
-    <value>Программу</value>
-  </data>
-  <data name="RunAs" xml:space="preserve">
-    <value>Запускать как</value>
-  </data>
-  <data name="Task" xml:space="preserve">
-    <value>Задачу</value>
-  </data>
   <data name="UseCustomSteamFolder" xml:space="preserve">
-    <value>Использовать кастомную папку Steam</value>
+    <value>Использ. кастомную папку Steam</value>
   </data>
   <data name="Utils" xml:space="preserve">
     <value>Утилиты</value>
@@ -681,7 +779,7 @@
     <value>Поддержка Switch Pro</value>
   </data>
   <data name="FirstLaunch.SwitchProEnableText" xml:space="preserve">
-    <value>Поддержка Switch Pro (Nintendo Switch) Контроллеров</value>
+    <value>Поддержка Switch Pro (Nintendo Switch) контроллеров</value>
   </data>
   <data name="FirstLaunch.WinTitle" xml:space="preserve">
     <value>Первый запуск</value>
@@ -729,7 +827,7 @@
     <value>Элементы управления</value>
   </data>
   <data name="Cubic" xml:space="preserve">
-    <value>Cubic</value>
+    <value>Кубик</value>
   </data>
   <data name="DeadZone X" xml:space="preserve">
     <value>Мертвая зона X</value>
@@ -741,10 +839,10 @@
     <value>Тип мертвой зоны</value>
   </data>
   <data name="EaseoutCubic" xml:space="preserve">
-    <value>Easeout Cubic</value>
+    <value>Ослабление Кубика</value>
   </data>
   <data name="EaseoutQuad" xml:space="preserve">
-    <value>Easeout Quad</value>
+    <value>Ослабление Квадрата</value>
   </data>
   <data name="EnhancedPrecision" xml:space="preserve">
     <value>Повышенная точность</value>
@@ -756,7 +854,7 @@
     <value>Линейный</value>
   </data>
   <data name="MaxOutput" xml:space="preserve">
-    <value>Максимальный выход</value>
+    <value>Максимальный вывод</value>
   </data>
   <data name="MouseOffset" xml:space="preserve">
     <value>Смещение мыши</value>
@@ -765,16 +863,16 @@
     <value>Вертикальное увеличение мыши</value>
   </data>
   <data name="OutputCurve" xml:space="preserve">
-    <value>Кривая</value>
+    <value>Исходная Кривая</value>
   </data>
   <data name="OutputMode" xml:space="preserve">
-    <value>Режим</value>
+    <value>Исходный Режим</value>
   </data>
   <data name="Quadratic" xml:space="preserve">
-    <value>Quadratic</value>
+    <value>Квадратичный</value>
   </data>
   <data name="Radial" xml:space="preserve">
-    <value>Radial</value>
+    <value>Радиальный</value>
   </data>
   <data name="Sensitivity" xml:space="preserve">
     <value>Чувствительность</value>
@@ -783,13 +881,13 @@
     <value>Шесть осей (акселерометр)</value>
   </data>
   <data name="SquareStick" xml:space="preserve">
-    <value>Square Stick</value>
+    <value>Квадратный стик</value>
   </data>
   <data name="VerticalScale" xml:space="preserve">
     <value>Вертикальное увеличение</value>
   </data>
   <data name="AntiSnapback" xml:space="preserve">
-    <value>Анти-снэпбек</value>Snapback
+    <value>Анти-снэпбек</value>
   </data>
   <data name="AntiSnapbackTiming" xml:space="preserve">
     <value>Временный анти-снэпбек</value>
@@ -801,43 +899,43 @@
     <value>Работает только с ViGEmBus 1.17.333.0 и выше</value>
   </data>
   <data name="AbsoluteMouse" xml:space="preserve">
-    <value>Мышь с абсолютным указанием положения</value>
+    <value>Мышь с абсолютным положением</value>
   </data>
   <data name="AbsoluteMouseOptions" xml:space="preserve">
-    <value>Настройка мыши с абсолютным указанием положения</value>
+    <value>Настройка Мыши с абсолютным положением</value>
   </data>
   <data name="AntiRadius" xml:space="preserve">
     <value>Анти-радиус</value>
   </data>
   <data name="BindingWin.AbsMouse" xml:space="preserve">
-    <value>Мышь с абсолютным указанием положения</value>
+    <value>Мышь с абс. полож.</value>
   </data>
   <data name="BindingWin.AbsMouseDown" xml:space="preserve">
-    <value>Мышь с абсолютным указанием положения вниз</value>
+    <value>Мышь с абс. полож. Вниз</value>
   </data>
   <data name="BindingWin.AbsMouseLeft" xml:space="preserve">
-    <value>Мышь с абсолютным указанием положения влево</value>
+    <value>Мышь с абс. полож. Влево</value>
   </data>
   <data name="BindingWin.AbsMouseRight" xml:space="preserve">
-    <value>Мышь с абсолютным указанием положения вправо</value>
+    <value>Мышь с абс. полож. Вправо</value>
   </data>
   <data name="BindingWin.AbsMouseUp" xml:space="preserve">
-    <value>Мышь с абсолютным указанием положения вверх</value>
+    <value>Мышь с абс. полож. Вверх</value>
   </data>
   <data name="BindingWin.ChangeLight" xml:space="preserve">
-    <value>Изменить цвет</value>
+    <value>Изменить свет</value>
   </data>
   <data name="BindingWin.ChangeMouseSensitivity" xml:space="preserve">
     <value>Изменить чувствительность мыши</value>
   </data>
   <data name="BindingWin.KeyAndRelMouse" xml:space="preserve">
-    <value>KB &amp; Rel Mouse</value>
+    <value>Клав и отпуск. Мыши</value>
   </data>
   <data name="BindingWin.KeyboardAndMouse" xml:space="preserve">
-    <value>Keyboard &amp; Mouse</value>
+    <value>Клавиатура и Мышь</value>
   </data>
   <data name="BindingWin.MacroOn" xml:space="preserve">
-    <value>Макрос включен. Выберите клавишу для выключения, или закройте это окно для сохранения</value>
+    <value>Макрос включен. Выберите клавишу для выключения или закройте это окно для сохранения</value>
   </data>
   <data name="BindingWin.RecordAMacro" xml:space="preserve">
     <value>Записать макрос</value>
@@ -858,7 +956,7 @@
     <value>Режим связи</value>
   </data>
   <data name="ControllerRegOptWin.MuteLEDMode" xml:space="preserve">
-    <value>Режим светодиода Mute</value>
+    <value>Заглушить режим светодиода</value>
   </data>
   <data name="ControllerRegOptWin.PlayerLEDMode" xml:space="preserve">
     <value>Режим светодиода игрока</value>
@@ -894,16 +992,16 @@
     <value>Полное нажатие</value>
   </data>
   <data name="Fuzz" xml:space="preserve">
-    <value>Fuzz</value>
+    <value>Фузз</value>
   </data>
   <data name="GyroControlsAccel" xml:space="preserve">
     <value>Управление (Ускорение)</value>
   </data>
   <data name="Heavy" xml:space="preserve">
-    <value>Тяжесть</value>
+    <value>Тяжелая</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Высота</value>
+    <value>Высокая</value>
   </data>
   <data name="HipFireDelay" xml:space="preserve">
     <value>Задержка выстрела от бедра</value>
@@ -975,13 +1073,13 @@
     <value>Другой</value>
   </data>
   <data name="OuterBind" xml:space="preserve">
-    <value>Внешнее привязывание</value>
+    <value>Внешняя привязка</value>
   </data>
   <data name="OuterBtn" xml:space="preserve">
-    <value>Внешний Btn</value>
+    <value>Внешняя кнопка</value>
   </data>
   <data name="OuterBtnDead" xml:space="preserve">
-    <value>Внешний Btn Dead</value>
+    <value>Мертвая зона внешней кнопки</value>
   </data>
   <data name="Passthru" xml:space="preserve">
     <value>Передача</value>
@@ -999,10 +1097,10 @@
     <value>Дважды щелкните по ожиданию, чтобы отредактировать время</value>
   </data>
   <data name="RecordBox.FifthMB" xml:space="preserve">
-    <value>Пятая кнопка мыши</value>
+    <value>5-я кнопка мыши</value>
   </data>
   <data name="RecordBox.FourthMB" xml:space="preserve">
-    <value>Четвертая кнопка мыши</value>
+    <value>4-я кнопка мыши</value>
   </data>
   <data name="RecordBox.InsertWait" xml:space="preserve">
     <value>Вставить задержку</value>
@@ -1011,7 +1109,7 @@
     <value>Загрузить настройку</value>
   </data>
   <data name="RecordBox.MacroOrder" xml:space="preserve">
-    <value>Макрос</value>
+    <value>Порядок макроса</value>
   </data>
   <data name="RecordBox.PlayOnce" xml:space="preserve">
     <value>Воспроизвести один раз</value>
@@ -1023,7 +1121,7 @@
     <value>Повторять, пока удерживается</value>
   </data>
   <data name="RecordBox.SavePreset" xml:space="preserve">
-    <value>Сохранить настройку</value>
+    <value>Сохранить пресет</value>
   </data>
   <data name="RecordBox.UseActionToRecord" xml:space="preserve">
     <value>Использовать клавиатуру/Мышь + Контроллер 1 для записи</value>
@@ -1041,7 +1139,7 @@
     <value>Переименовать профиль</value>
   </data>
   <data name="Rotation" xml:space="preserve">
-    <value>Поворот</value>
+    <value>Вращение</value>
   </data>
   <data name="ScanCode" xml:space="preserve">
     <value>Сканировать код</value>
@@ -1080,7 +1178,7 @@
     <value>UDP Сервер</value>
   </data>
   <data name="Unbound" xml:space="preserve">
-    <value>Не назначенный</value>
+    <value>Не задано</value>
   </data>
   <data name="UpdaterWin.WinTitle" xml:space="preserve">
     <value>Обновить окно</value>
@@ -1119,10 +1217,10 @@
     <value>XInput #</value>
   </data>
   <data name="Pitch" xml:space="preserve">
-    <value>Тон</value>
+    <value>Подача</value>
   </data>
   <data name="PresetOptWin.OutputController" xml:space="preserve">
-    <value>Контроллер вывода</value>
+    <value>Исходный Контроллер</value>
   </data>
   <data name="PresetOptWin.PresetMenu" xml:space="preserve">
     <value>Меню настроек</value>
@@ -1134,7 +1232,7 @@
     <value>Задержка вывода: N/A</value>
   </data>
   <data name="ReadingsControl.SixAxisXText" xml:space="preserve">
-    <value>SixAxis: ось X перевернута, поэтому ее легче читать.</value>
+    <value>Шестиосная: ось X перевернута, поэтому ее легче читать.</value>
   </data>
   <data name="Requested" xml:space="preserve">
     <value>Запрошено</value>
@@ -1146,10 +1244,10 @@
     <value>Рыскание</value>
   </data>
   <data name="Appdata" xml:space="preserve">
-    <value>Appdata</value>
+    <value>Данные приложения</value>
   </data>
   <data name="ProgramFolder" xml:space="preserve">
-    <value>Program Folder</value>
+    <value>Папка программы</value>
   </data>
   <data name="SaveWhere.AppDataDescText" xml:space="preserve">
     <value>Для тех, кто предпочитает обычную установку. Настройки сохраняются по пути %appdata%\DS4Windows</value>
@@ -1164,7 +1262,8 @@
     <value>Выберите, где вы хотите сохранять профили и настройки</value>
   </data>
   <data name="SaveWhere.ProgramFolderDescText" xml:space="preserve">
-    <value>Для тех, кто предпочитает портативную программу. Примечание: эта опция не работает, если программа находится в административной папке без нужных прав</value>
+    <value>Для тех, кто предпочитает портативную программу.
+Примечание: эта опция не работает в папке администратора без контроля учетных записей (UAC).</value>
   </data>
   <data name="SaveWhere.WinTitle" xml:space="preserve">
     <value>Сохранить</value>
@@ -1182,7 +1281,7 @@
     <value>Если вы уже использовали контроллер Xbox 360 на этом компьютере, вы можете пропустить этот шаг.</value>
   </data>
   <data name="Welcome.Step2Text" xml:space="preserve">
-    <value>Шаг 3: Если вы используете Windows 7, Установите 360 Driver</value>
+    <value>Шаг 2: Если вы используете Windows 7, Установите 360 Driver</value>
   </data>
   <data name="Welcome.Step3BluetoothHelpText" xml:space="preserve">
     <value>После мигания перейдите в настройки Bluetooth и подключитесь к "Wireless Controller". Если вас попросят, введите код для сопряжения 0000. После подключения вы готовы. Удачи!</value>
@@ -1192,7 +1291,8 @@
 Для настройки по проводу/USB:
 Просто подключите micro-USB в ваш компьютер и в DualShock 4.
 
-Для настройки по Bluetooth (дополнительно): Зажмите Кнопку PS и Share на 3 секунды. Световая полоса начнет мигать дважды.</value>
+Для настройки Bluetooth (необязательно): удерживайте кнопку PS и кнопку Share в течение 3 секунд. Световая полоса начнет мигать в два раза чаще.</value>
+    <comment>To enter a line break into a string resource value in VisualStudio resource editor press Shift+Enter.</comment>
   </data>
   <data name="Welcome.Step4HelpText" xml:space="preserve">
     <value>Используйте HidHide для конфигурации и скрытия любых контроллеров ввода от других приложений, работающих на вашей системе. Некоторые игры требуют наличие только одного контроллера, и двойной ввод может вызвать проблемы в игре.</value>
@@ -1292,5 +1392,90 @@
   </data>
   <data name="UnloadTrigger" xml:space="preserve">
     <value>Выгрузить триггер</value>
+  </data>
+  <data name="Net8NoticeWin.WinTitle" xml:space="preserve">
+    <value>.NET 8 не найдено</value>
+  </data>
+  <data name="Net8NotInstalledWinNotice" xml:space="preserve">
+    <value>DS4Windows версии 3.3 потребуется установка .NET 8 Desktop Runtime на ваш компьютер.
+[https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.0-windows-{0}-installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.0-windows-{0}-installer)  
+
+Пожалуйста, нажмите ОК, чтобы подтвердить прочтение сообщения. Нажмите Отмена, чтобы получать напоминание при следующем запуске приложения.</value>
+    <comment>Можно использовать синтаксис Markdown</comment>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Кастомная</value>
+  </data>
+  <data name="ControllerSupportMoonlight" xml:space="preserve">
+    <value>Поддержка виртуального контроллера</value>
+  </data>
+  <data name="AdvancedSupport" xml:space="preserve">
+    <value>Расширенная поддержка</value>
+  </data>
+  <data name="UseDs3PitchRollSim" xml:space="preserve">
+    <value>[ЭКСПЕРИМЕНТАЛЬНЫЙ] Использ. симул. гироскопа DS3.</value>
+  </data>
+  <data name="StickCalibration" xml:space="preserve">
+    <value>Калибровка стика</value>
+  </data>
+  <data name="XAxisOffset" xml:space="preserve">
+    <value>Смещение оси X</value>
+  </data>
+  <data name="YAxisOffset" xml:space="preserve">
+    <value>Смещение оси Y</value>
+  </data>
+  <data name="AutomaticallyRecalibrateStick" xml:space="preserve">
+    <value>Автоматическая перекалибровка джойстика</value>
+  </data>
+  <data name="ProcessPriority" xml:space="preserve">
+    <value>Приоритет процесса</value>
+  </data>
+  <data name="RealTimeNoAdmin" xml:space="preserve">
+    <value>Для выбора приоритета в реальном времени необходимо запустить приложение в режиме администратора.</value>
+  </data>
+  <data name="ProfileSwitchNotification" xml:space="preserve">
+    <value>Отображать уведомление о переключении профиля</value>
+  </data>
+  <data name="CreateLightbarMacro" xml:space="preserve">
+    <value>Создать макрос световой панели</value>
+  </data>
+  <data name="LightbarMode" xml:space="preserve">
+    <value>Режим световой панели</value>
+  </data>
+  <data name="SolidColor" xml:space="preserve">
+    <value>Однотонный цвет</value>
+  </data>
+  <data name="Macro" xml:space="preserve">
+    <value>Макрос</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="ColorAndLength" xml:space="preserve">
+    <value>Цвет и длина</value>
+  </data>
+  <data name="SpecialActionEdit.CalibrateGyro" xml:space="preserve">
+    <value>Откалибровать гироскоп</value>
+  </data>
+  <data name="HoldFor" xml:space="preserve">
+    <value>Удерживать для</value>
+  </data>
+  <data name="FailedToRetrieveLatestVersion" xml:space="preserve">
+    <value>Не удалось получить последнюю версию</value>
+  </data>
+  <data name="CancelCurrentMacro" xml:space="preserve">
+    <value>Отменить текущий макрос</value>
+  </data>
+  <data name="CancelCurrentMacroTooltip" xml:space="preserve">
+    <value>Указывает, следует ли при выполнении этого макроса остановить действующий в данный момент макрос.</value>
+  </data>
+  <data name="ExportSpecialActions" xml:space="preserve">
+    <value>Экспорт действий</value>
+  </data>
+  <data name="InverseMotors" xml:space="preserve">
+    <value>Инверсия моторчиков</value>
   </data>
 </root>
