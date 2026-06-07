@@ -814,7 +814,10 @@ namespace DS4Windows.InputDevices
 
                         // Capture Button
                         //cState.PS = (tempByte & 0x20) != 0;
-                        cState.Capture = (tempByte & 0x20) != 0;
+                        //cState.Capture = (tempByte & 0x20) != 0;
+                        cState.TouchButton = (tempByte & 0x20) != 0;
+
+                        cState.OutputTouchButton = cState.TouchButton;
 
                         tempByte = inputReportBuffer[5];
                         cState.DpadUp = (tempByte & 0x02) != 0;
