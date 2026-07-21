@@ -949,6 +949,87 @@ Disabled:
   <data name="ControllerRegOptWin.EnableHomeLED" xml:space="preserve">
     <value>Enable Home LED</value>
   </data>
+  <data name="ControllerRegOptWin.AudioDeviceDefault" xml:space="preserve">
+    <value>Default output device</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioDeviceUnavailable" xml:space="preserve">
+    <value>(saved device, currently unavailable)</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioOutput" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioRouteAuto" xml:space="preserve">
+    <value>Auto (headphones when plugged in)</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioRouteHeadphones" xml:space="preserve">
+    <value>Headphone jack</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioRouteSpeaker" xml:space="preserve">
+    <value>Built-in speaker</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioSource" xml:space="preserve">
+    <value>Audio source</value>
+  </data>
+  <data name="ControllerRegOptWin.BTAudioDescription" xml:space="preserve">
+    <value>Streams the selected audio source to the controller's headphone jack or built-in speaker over Bluetooth — no USB cable needed.</value>
+  </data>
+  <data name="ControllerRegOptWin.BTAudioHeading" xml:space="preserve">
+    <value>Bluetooth Audio (headphones / speaker)</value>
+  </data>
+  <data name="ControllerRegOptWin.BTStreamingNote" xml:space="preserve">
+    <value>Bluetooth connections only. Applies immediately. While streaming is active, standard rumble emulation is disabled (the controller cannot do both at once) — use a haptics mode that includes Rumble to keep feeling game rumble. Pick the audio source your game actually plays through. Protocol research credit: egormanga/SAxense, awalol/DS5Dongle, and loteran/DS5Dongle AutoHaptics.</value>
+  </data>
+  <data name="ControllerRegOptWin.Buffering" xml:space="preserve">
+    <value>Buffering</value>
+  </data>
+  <data name="ControllerRegOptWin.BufferingTip" xml:space="preserve">
+    <value>Smooth = most stable, ~0.3-0.4 s behind. Low latency = ~0.1 s behind, but needs a clean Bluetooth link (interference causes dropouts). Applies to both audio and audio-based haptics.</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsDescription" xml:space="preserve">
+    <value>Streams haptic audio to the controller's actuators over Bluetooth. System Audio converts what you hear into haptics; Rumble To Haptics re-voices game rumble through the haptic actuators.</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsHeading" xml:space="preserve">
+    <value>Bluetooth Haptic Feedback (audio-based)</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsMode" xml:space="preserve">
+    <value>Haptics mode</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeMix" xml:space="preserve">
+    <value>System Audio + Rumble</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeRumble" xml:space="preserve">
+    <value>Rumble To Haptics</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeSystemAudio" xml:space="preserve">
+    <value>System Audio</value>
+  </data>
+  <data name="ControllerRegOptWin.Intensity" xml:space="preserve">
+    <value>Intensity</value>
+  </data>
+  <data name="ControllerRegOptWin.LatencyBalanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="ControllerRegOptWin.LatencyLow" xml:space="preserve">
+    <value>Low latency (clean link needed)</value>
+  </data>
+  <data name="ControllerRegOptWin.LatencySmooth" xml:space="preserve">
+    <value>Smooth (most buffering)</value>
+  </data>
+  <data name="ControllerRegOptWin.LowPassFilter" xml:space="preserve">
+    <value>Low-pass filter (Hz)</value>
+  </data>
+  <data name="ControllerRegOptWin.LowPassFilterTip" xml:space="preserve">
+    <value>Lower values = only deep bass becomes haptics; higher values = more texture from the audio.</value>
+  </data>
+  <data name="ControllerRegOptWin.SendAudioToController" xml:space="preserve">
+    <value>Send audio to controller</value>
+  </data>
+  <data name="ControllerRegOptWin.Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
   <data name="ControllerRegOptWin.JoinedGyroProvider" xml:space="preserve">
     <value>Joined Gyro Provider</value>
   </data>

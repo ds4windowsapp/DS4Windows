@@ -697,6 +697,249 @@ namespace DS4WinWPF.Translations {
                 return ResourceManager.GetString("ControllerRegOptWin.EnableHomeLED", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Default output device.
+        /// </summary>
+        public static string ControllerRegOptWin_AudioDeviceDefault {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioDeviceDefault", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to (saved device, currently unavailable).
+        /// </summary>
+        public static string ControllerRegOptWin_AudioDeviceUnavailable {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioDeviceUnavailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Output.
+        /// </summary>
+        public static string ControllerRegOptWin_AudioOutput {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioOutput", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto (headphones when plugged in).
+        /// </summary>
+        public static string ControllerRegOptWin_AudioRouteAuto {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioRouteAuto", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Headphone jack.
+        /// </summary>
+        public static string ControllerRegOptWin_AudioRouteHeadphones {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioRouteHeadphones", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Built-in speaker.
+        /// </summary>
+        public static string ControllerRegOptWin_AudioRouteSpeaker {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioRouteSpeaker", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Audio source.
+        /// </summary>
+        public static string ControllerRegOptWin_AudioSource {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.AudioSource", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the localized Bluetooth audio description.
+        /// </summary>
+        public static string ControllerRegOptWin_BTAudioDescription {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.BTAudioDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Bluetooth Audio (headphones / speaker).
+        /// </summary>
+        public static string ControllerRegOptWin_BTAudioHeading {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.BTAudioHeading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the localized Bluetooth streaming note.
+        /// </summary>
+        public static string ControllerRegOptWin_BTStreamingNote {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.BTStreamingNote", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Buffering.
+        /// </summary>
+        public static string ControllerRegOptWin_Buffering {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.Buffering", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the localized buffering tooltip.
+        /// </summary>
+        public static string ControllerRegOptWin_BufferingTip {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.BufferingTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the localized Bluetooth haptics description.
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsDescription {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Bluetooth Haptic Feedback (audio-based).
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsHeading {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsHeading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Haptics mode.
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsMode {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsMode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System Audio + Rumble.
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsModeMix {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsModeMix", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsModeOff {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsModeOff", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rumble To Haptics.
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsModeRumble {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsModeRumble", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System Audio.
+        /// </summary>
+        public static string ControllerRegOptWin_HapticsModeSystemAudio {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.HapticsModeSystemAudio", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Intensity.
+        /// </summary>
+        public static string ControllerRegOptWin_Intensity {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.Intensity", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Balanced.
+        /// </summary>
+        public static string ControllerRegOptWin_LatencyBalanced {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.LatencyBalanced", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Low latency (clean link needed).
+        /// </summary>
+        public static string ControllerRegOptWin_LatencyLow {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.LatencyLow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Smooth (most buffering).
+        /// </summary>
+        public static string ControllerRegOptWin_LatencySmooth {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.LatencySmooth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Low-pass filter (Hz).
+        /// </summary>
+        public static string ControllerRegOptWin_LowPassFilter {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.LowPassFilter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the localized low-pass filter tooltip.
+        /// </summary>
+        public static string ControllerRegOptWin_LowPassFilterTip {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.LowPassFilterTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Send audio to controller.
+        /// </summary>
+        public static string ControllerRegOptWin_SendAudioToController {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.SendAudioToController", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public static string ControllerRegOptWin_Volume {
+            get {
+                return ResourceManager.GetString("ControllerRegOptWin.Volume", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Joined Gyro Provider.

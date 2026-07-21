@@ -229,6 +229,28 @@ namespace DS4Windows
             Pulse
         }
 
+        public enum HapticsMode : ushort
+        {
+            Off,
+            SystemAudio,
+            RumbleToHaptics,
+            Mix,
+        }
+
+        public enum AudioOutputRoute : ushort
+        {
+            Auto,       // headphone jack when plugged in, speaker otherwise
+            Headphone,
+            Speaker,
+        }
+
+        public enum AudioLatencyMode : ushort
+        {
+            Smooth,     // maximum buffering; survives congested links
+            Balanced,
+            LowLatency, // minimum buffering; needs a clean link
+        }
+
         private LEDBarMode ledMode = LEDBarMode.MultipleControllers;
         public LEDBarMode LedMode
         {
@@ -254,6 +276,112 @@ namespace DS4Windows
             }
         }
         public event EventHandler MuteLedModeChanged;
+
+        // Bluetooth audio-haptics streaming settings. Fires a single combined
+        // change event; the device applies live-safe fields or restarts the
+        // capture pipeline as needed.
+        private HapticsMode btHapticsMode = HapticsMode.Off;
+        public HapticsMode BTHapticsMode
+        {
+            get => btHapticsMode;
+            set
+            {
+                if (btHapticsMode == value) return;
+                btHapticsMode = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private double btHapticsGain = 3.0;
+        public double BTHapticsGain
+        {
+            get => btHapticsGain;
+            set
+            {
+                value = Math.Clamp(value, 0.1, 10.0);
+                if (btHapticsGain == value) return;
+                btHapticsGain = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private int btHapticsLowPassHz = 350;
+        public int BTHapticsLowPassHz
+        {
+            get => btHapticsLowPassHz;
+            set
+            {
+                value = Math.Clamp(value, 40, 1000);
+                if (btHapticsLowPassHz == value) return;
+                btHapticsLowPassHz = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private string btHapticsAudioDeviceId = string.Empty;
+        public string BTHapticsAudioDeviceId
+        {
+            get => btHapticsAudioDeviceId;
+            set
+            {
+                value ??= string.Empty;
+                if (btHapticsAudioDeviceId == value) return;
+                btHapticsAudioDeviceId = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        // Bluetooth listening-audio (headphone jack / speaker) settings.
+        private bool btAudioEnabled = false;
+        public bool BTAudioEnabled
+        {
+            get => btAudioEnabled;
+            set
+            {
+                if (btAudioEnabled == value) return;
+                btAudioEnabled = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private AudioOutputRoute btAudioRoute = AudioOutputRoute.Auto;
+        public AudioOutputRoute BTAudioRoute
+        {
+            get => btAudioRoute;
+            set
+            {
+                if (btAudioRoute == value) return;
+                btAudioRoute = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private int btAudioVolume = 50;
+        public int BTAudioVolume
+        {
+            get => btAudioVolume;
+            set
+            {
+                value = Math.Clamp(value, 0, 100);
+                if (btAudioVolume == value) return;
+                btAudioVolume = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private AudioLatencyMode btAudioLatency = AudioLatencyMode.Smooth;
+        public AudioLatencyMode BTAudioLatency
+        {
+            get => btAudioLatency;
+            set
+            {
+                if (btAudioLatency == value) return;
+                btAudioLatency = value;
+                BTHapticsOptionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler BTHapticsOptionChanged;
 
         public DualSenseControllerOptions(InputDeviceType deviceType) :
             base(deviceType)

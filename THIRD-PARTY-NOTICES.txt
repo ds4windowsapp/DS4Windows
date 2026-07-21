@@ -1,0 +1,176 @@
+THIRD-PARTY NOTICES
+===================
+
+This file records third-party software and research used by DS4Windows'
+DualSense Bluetooth audio and haptics support. It supplements NOTICE.txt.
+DS4Windows itself is distributed under the GNU General Public License,
+version 3 or later.
+
+
+-------------------------------------------------------------------------------
+Concentus 2.2.2
+-------------------------------------------------------------------------------
+
+Portable C# implementation of the Opus audio codec.
+
+Project: https://github.com/lostromb/concentus
+Source:  https://github.com/lostromb/concentus/tree/6c2328dc19044601e33a9c11628b8d60e1f3011c
+
+Copyright (c) by various holding parties, including (but not limited to):
+Skype Limited, Xiph.Org Foundation, CSIRO, Microsoft Corporation,
+Jean-Marc Valin, Gregory Maxwell, Mark Borgerding, Timothy B. Terriberry,
+Logan Stromberg. All rights are reserved by their respective holders.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of Internet Society, IETF or IETF Trust, nor the names of
+  specific contributors, may be used to endorse or promote products derived
+  from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+This repository and its redistributable packages contain independently compiled
+versions of the Opus C reference library, which is maintained by Xiph.org and
+the Opus open-source contributors. The source code for these libraries is freely
+available at https://gitlab.xiph.org/xiph/opus/-/tags/v1.5.2, and all binaries
+are being redistributed to you under the same terms of the general Opus license
+dictated above.
+
+
+-------------------------------------------------------------------------------
+NAudio.Wasapi 2.2.1 and NAudio.Core 2.2.1
+-------------------------------------------------------------------------------
+
+Project: https://github.com/naudio/NAudio
+Source:  https://github.com/naudio/NAudio/tree/v2.2.1
+
+The MIT License (MIT)
+
+Copyright 2020 Mark Heath
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+-------------------------------------------------------------------------------
+Cockos WDL resampler, through NAudio.Core's managed WdlResampler
+-------------------------------------------------------------------------------
+
+NAudio's source describes this class as based on the Cockos WDL C++ resampler,
+ported to C# for NAudio by Mark Heath, and used in NAudio with permission from
+Justin Frankel.
+
+NAudio source:
+https://github.com/naudio/NAudio/blob/v2.2.1/NAudio.Core/Dsp/WdlResampler.cs
+
+Copyright (C) 2005 and later Cockos Incorporated
+
+Portions copyright other contributors, see each source file for more information
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+   claim that you wrote the original software. If you use this software
+   in a product, an acknowledgment in the product documentation would be
+   appreciated but is not required.
+2. Altered source versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+3. This notice may not be removed or altered from any source distribution.
+
+
+-------------------------------------------------------------------------------
+DS5Dongle AutoHaptics
+-------------------------------------------------------------------------------
+
+The DualSense Bluetooth audio container framing, Opus stream parameters,
+speaker/headphone routing, and controller-state setup were informed by and
+adapted from DS5Dongle AutoHaptics, a fork of awalol/DS5Dongle.
+
+Project:  https://github.com/loteran/DS5Dongle
+Source:   https://github.com/loteran/DS5Dongle/tree/4884c830641f47353f2eead4475b59dca9e4076d
+Original: https://github.com/awalol/DS5Dongle
+
+The final 0x36 layout and state initializer used here were already published
+under the original repository's MIT license at these revisions:
+
+https://github.com/awalol/DS5Dongle/tree/7bbe37ba1c113066a37f84efa4ff77e78b4ba767
+https://github.com/awalol/DS5Dongle/tree/f882ff1cf5df4f57c54b5e9c999e473b77aba86b
+
+MIT License
+
+Copyright (c) awalol
+Copyright (c) 2026 loteran — auto-haptics audio engine, battery color LED,
+    runtime wake toggle, PyQt6 config app, PipeWire loopback integration,
+    and all additions since the fork
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+-------------------------------------------------------------------------------
+SAxense research acknowledgment
+-------------------------------------------------------------------------------
+
+The DualSense Bluetooth haptics framing was informed by the independent
+protocol research published by SAxense. Its source identifies the researcher
+as Sdore. Only protocol facts were consulted; no SAxense source code is copied
+or translated in this implementation.
+
+Project:       https://github.com/egormanga/SAxense
+Source:        https://github.com/egormanga/SAxense/tree/6fd1648e0b2168bfe270f26b766fc897562091ab
+Research page: https://apps.sdore.me/SAxense
+License:       Mozilla Public License 2.0
+               https://www.mozilla.org/MPL/2.0/
