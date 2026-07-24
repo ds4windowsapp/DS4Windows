@@ -119,6 +119,8 @@ namespace DS4Windows
         private static Dictionary<string, DS4Device> serialDevices = new Dictionary<string, DS4Device>();
         private static HashSet<string> deviceSerials = new HashSet<string>();
         private static HashSet<string> DevicePaths = new HashSet<string>();
+        private static readonly NativeModeDeviceGuard nativeModeGuard =
+            new NativeModeDeviceGuard();
         // Keep instance of opened exclusive mode devices not in use (Charging while using BT connection)
         private static List<HidDevice> DisabledDevices = new List<HidDevice>();
         private static Stopwatch sw = new Stopwatch();
@@ -136,6 +138,26 @@ namespace DS4Windows
         internal const int JOYCON_L_PRODUCT_ID = 0x2006;
         internal const int JOYCON_R_PRODUCT_ID = 0x2007;
         internal const int JOYCON_CHARGING_GRIP_PRODUCT_ID = 0x200E;
+
+        public static NativeModeDeviceGuard NativeModeGuard => nativeModeGuard;
+
+        public static void BeginNativeModeSuppression(string macAddress, string devicePath)
+        {
+            // Serialize activation with enumeration. Once this returns, no
+            // findControllers pass can have crossed the suppression check.
+            lock (Devices)
+            {
+                nativeModeGuard.Activate(macAddress, devicePath);
+            }
+        }
+
+        public static void EndNativeModeSuppression()
+        {
+            lock (Devices)
+            {
+                nativeModeGuard.Clear();
+            }
+        }
 
         // https://support.steampowered.com/kb_article.php?ref=5199-TOKV-4426&l=english web site has a list of other PS4 compatible device VID/PID values and brand names. 
         // However, not all those are guaranteed to work with DS4Windows app so support is added case by case when users of DS4Windows app tests non-official DS4 gamepads.
@@ -238,6 +260,8 @@ namespace DS4Windows
             {
                 IEnumerable<HidDevice> hDevices = HidDevices.EnumerateDS4(knownDevices);
                 hDevices = hDevices.Where(d =>
+                    !nativeModeGuard.ShouldSuppressPath(d.DevicePath));
+                hDevices = hDevices.Where(d =>
                 {
                     VidPidInfo metainfo = knownDevices.Single(x => x.vid == d.Attributes.VendorId &&
                         x.pid == d.Attributes.ProductId);
@@ -270,6 +294,15 @@ namespace DS4Windows
                 //foreach (HidDevice hDevice in hDevices)
                 {
                     HidDevice hDevice = tempList[i];
+                    if (nativeModeGuard.ShouldSuppressPath(hDevice.DevicePath))
+                    {
+                        // DisabledDevices can contain an already-open exclusive
+                        // endpoint. Do not retain that handle for native mode.
+                        if (hDevice.IsOpen)
+                            hDevice.CloseDeviceHandle();
+                        continue;
+                    }
+
                     VidPidInfo metainfo = knownDevices.Single(x => x.vid == hDevice.Attributes.VendorId &&
                         x.pid == hDevice.Attributes.ProductId);
 

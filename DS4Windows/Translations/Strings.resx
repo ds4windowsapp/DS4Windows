@@ -949,6 +949,171 @@ Disabled:
   <data name="ControllerRegOptWin.EnableHomeLED" xml:space="preserve">
     <value>Enable Home LED</value>
   </data>
+  <data name="ControllerRegOptWin.AudioDeviceDefault" xml:space="preserve">
+    <value>Default output device</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioDeviceUnavailable" xml:space="preserve">
+    <value>(saved device, currently unavailable)</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioOutput" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioRouteAuto" xml:space="preserve">
+    <value>Auto (headphones when plugged in)</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioRouteHeadphones" xml:space="preserve">
+    <value>Headphone jack</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioRouteSpeaker" xml:space="preserve">
+    <value>Built-in speaker</value>
+  </data>
+  <data name="ControllerRegOptWin.AudioSource" xml:space="preserve">
+    <value>Audio source</value>
+  </data>
+  <data name="ControllerRegOptWin.BTAudioDescription" xml:space="preserve">
+    <value>Streams the selected audio source to the controller's headphone jack or built-in speaker over Bluetooth — no USB cable needed.</value>
+  </data>
+  <data name="ControllerRegOptWin.BTAudioHeading" xml:space="preserve">
+    <value>Bluetooth Audio (headphones / speaker)</value>
+  </data>
+  <data name="ControllerRegOptWin.BTStreamingNote" xml:space="preserve">
+    <value>Bluetooth connections only. Applies immediately. While streaming is active, standard rumble emulation is disabled (the controller cannot do both at once) — use a haptics mode that includes Rumble to keep feeling game rumble. Pick the audio source your game actually plays through. Protocol research credit: egormanga/SAxense, awalol/DS5Dongle, and loteran/DS5Dongle AutoHaptics.</value>
+  </data>
+  <data name="ControllerRegOptWin.StandardNativeModeNote" xml:space="preserve">
+    <value>The next two sections apply only in standard mode while DS4Windows directly manages the controller; they are inactive during Native Mode.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeHeading" xml:space="preserve">
+    <value>Native passthrough (virtual wired DualSense)</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeDescription" xml:space="preserve">
+    <value>Lets games use their native wired DualSense support while this controller remains connected over Bluetooth. Start Native Mode before launching or restarting the game so its audio system discovers the virtual controller. While active, both standard-mode sections above are inactive.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeSafetyWarning" xml:space="preserve">
+    <value>Experimental — known kernel risk: Native Mode depends on the external usbip-win2 driver. Version 0.9.7.8 has a confirmed BSOD race. The included teardown mitigations reduce the reproduced trigger but do not make that driver safe.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeSafetyConfirmationTitle" xml:space="preserve">
+    <value>Experimental Native Mode warning</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeSafetyConfirmation" xml:space="preserve">
+    <value>Native Mode uses the external usbip-win2 kernel driver. Its signed 0.9.7.8 release has a confirmed request-lifetime race that can cause a Windows blue screen. DS4Windows mitigates the reproduced teardown path, but cannot repair the driver. Continue with this controlled test?</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeRelaySpeakerAudio" xml:space="preserve">
+    <value>Relay native game speaker audio</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeSpeakerVolume" xml:space="preserve">
+    <value>Speaker/headphone volume</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeAudioOutput" xml:space="preserve">
+    <value>Controller audio output</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeCheckRequirements" xml:space="preserve">
+    <value>Check Native Mode requirements</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeRequirementsNote" xml:space="preserve">
+    <value>usbip.exe must be installed under Windows Program Files. If an older build left an elevated attach task, Check or Start requests one-time approval to delete it. Each Native Mode start then requests approval for only the fixed attach action.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeStart" xml:space="preserve">
+    <value>Start Native Mode</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeStop" xml:space="preserve">
+    <value>Stop Native Mode</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeErrorFormat" xml:space="preserve">
+    <value>Native Mode error: {0}</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeCheckingRequirements" xml:space="preserve">
+    <value>Checking Native Mode requirements and removing any legacy elevated attach task...</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeRequirementsReady" xml:space="preserve">
+    <value>Native Mode requirements are ready. Windows will request administrator approval when Native Mode starts.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeRequirementsFailedFormat" xml:space="preserve">
+    <value>Native Mode requirements check failed: {0}</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeAttachedDetectedFormat" xml:space="preserve">
+    <value>Native Mode attached — native haptics detected (L {0:0.00}%, R {1:0.00}%; BT errors {2}). If controller speaker audio is missing, restart the game after attachment.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeAttachedWaitingFormat" xml:space="preserve">
+    <value>Native Mode attached — start or restart the game now; waiting for native haptics (channels 3/4 silent; BT errors {0}).</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeStartingStatus" xml:space="preserve">
+    <value>Starting Native Mode server...</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeServingStatus" xml:space="preserve">
+    <value>Server running — attaching virtual DualSense...</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeAttachedStatus" xml:space="preserve">
+    <value>Native Mode attached — start or restart the game now.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModePadLostStatus" xml:space="preserve">
+    <value>Pad lost — press PS, then Start Native Mode again.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeRequirementsRequiredStatus" xml:space="preserve">
+    <value>Native Mode requirements need attention — select Check Native Mode requirements.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeFaultedStatus" xml:space="preserve">
+    <value>Native Mode faulted.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeFaultedFormat" xml:space="preserve">
+    <value>Native Mode faulted: {0}</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeStoppedStatus" xml:space="preserve">
+    <value>Native Mode stopped.</value>
+  </data>
+  <data name="ControllerRegOptWin.NativeModeCleanupPendingStatus" xml:space="preserve">
+    <value>Native Mode cleanup is pending; protections remain active. Use Stop Native Mode to retry.</value>
+  </data>
+  <data name="ControllerRegOptWin.Buffering" xml:space="preserve">
+    <value>Buffering</value>
+  </data>
+  <data name="ControllerRegOptWin.BufferingTip" xml:space="preserve">
+    <value>Smooth = most stable, ~0.3-0.4 s behind. Low latency = ~0.1 s behind, but needs a clean Bluetooth link (interference causes dropouts). Applies to both audio and audio-based haptics.</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsDescription" xml:space="preserve">
+    <value>Streams haptic audio to the controller's actuators over Bluetooth. System Audio converts what you hear into haptics; Rumble To Haptics re-voices game rumble through the haptic actuators.</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsHeading" xml:space="preserve">
+    <value>Bluetooth Haptic Feedback (audio-based)</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsMode" xml:space="preserve">
+    <value>Haptics mode</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeMix" xml:space="preserve">
+    <value>System Audio + Rumble</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeRumble" xml:space="preserve">
+    <value>Rumble To Haptics</value>
+  </data>
+  <data name="ControllerRegOptWin.HapticsModeSystemAudio" xml:space="preserve">
+    <value>System Audio</value>
+  </data>
+  <data name="ControllerRegOptWin.Intensity" xml:space="preserve">
+    <value>Intensity</value>
+  </data>
+  <data name="ControllerRegOptWin.LatencyBalanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="ControllerRegOptWin.LatencyLow" xml:space="preserve">
+    <value>Low latency (clean link needed)</value>
+  </data>
+  <data name="ControllerRegOptWin.LatencySmooth" xml:space="preserve">
+    <value>Smooth (most buffering)</value>
+  </data>
+  <data name="ControllerRegOptWin.LowPassFilter" xml:space="preserve">
+    <value>Low-pass filter (Hz)</value>
+  </data>
+  <data name="ControllerRegOptWin.LowPassFilterTip" xml:space="preserve">
+    <value>Lower values = only deep bass becomes haptics; higher values = more texture from the audio.</value>
+  </data>
+  <data name="ControllerRegOptWin.SendAudioToController" xml:space="preserve">
+    <value>Send audio to controller</value>
+  </data>
+  <data name="ControllerRegOptWin.Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
   <data name="ControllerRegOptWin.JoinedGyroProvider" xml:space="preserve">
     <value>Joined Gyro Provider</value>
   </data>

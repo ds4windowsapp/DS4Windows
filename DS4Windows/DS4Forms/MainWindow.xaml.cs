@@ -1029,6 +1029,9 @@ Suspend support not enabled.", true);
 
         private void MainDS4Window_Closed(object sender, EventArgs e)
         {
+            // Closed is reached only after Closing confirmation/minimize paths
+            // have completed, so teardown cannot fire for a canceled close.
+            App.rootHub.StopNativeModeForShutdown();
             hotkeysTimer.Stop();
             autoProfilesTimer.Stop();
             //autoProfileHolder.Save();

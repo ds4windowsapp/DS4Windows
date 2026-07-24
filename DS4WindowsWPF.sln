@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DS4WinWPF", "DS4Windows\DS4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DS4WindowsTests", "DS4WindowsTests\DS4WindowsTests.csproj", "{6BEB9062-56E7-4A0D-9243-BE43F09A711D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDualSenseUsbip", "utils\VirtualDualSenseUsbip\VirtualDualSenseUsbip.csproj", "{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -29,6 +31,14 @@ Global
 		{6BEB9062-56E7-4A0D-9243-BE43F09A711D}.Debug|x86.Build.0 = Debug|x86
 		{6BEB9062-56E7-4A0D-9243-BE43F09A711D}.Release|x64.ActiveCfg = Release|x64
 		{6BEB9062-56E7-4A0D-9243-BE43F09A711D}.Release|x86.ActiveCfg = Release|x86
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Release|x64.Build.0 = Release|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6FC5781-9634-4E78-9E9F-0A2B6DDEED65}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

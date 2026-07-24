@@ -209,6 +209,56 @@ namespace DS4Windows.InputDevices
         private DualSenseControllerOptions nativeOptionsStore;
         public DualSenseControllerOptions NativeOptionsStore { get => nativeOptionsStore; }
 
+        private DualSenseHapticsStreamer hapticsStreamer;
+        private volatile bool hapticsStreamerReady;
+
+        internal readonly struct BtOutputControl
+        {
+            public readonly byte EnableFlags;
+            public readonly byte PlayerLedFlags;
+            public readonly bool WriteMotorBytes;
+
+            public BtOutputControl(byte enableFlags, byte playerLedFlags, bool writeMotorBytes)
+            {
+                EnableFlags = enableFlags;
+                PlayerLedFlags = playerLedFlags;
+                WriteMotorBytes = writeMotorBytes;
+            }
+        }
+
+        internal static BtOutputControl GetBtOutputControl(bool useRumble,
+            bool useAccurateRumble, bool hapticsStreamActive)
+        {
+            if (hapticsStreamActive)
+                return new BtOutputControl(0x0C, 0x02, false);
+
+            return new BtOutputControl(
+                useRumble ? (byte)0x0F : (byte)0x0C,
+                useAccurateRumble ? (byte)0x06 : (byte)0x02,
+                useRumble || useAccurateRumble);
+        }
+
+        internal static BtOutputControl ApplyBtOutputControl(byte[] outputReport,
+            bool useRumble, bool useAccurateRumble, bool hapticsStreamActive,
+            byte lightMotor, byte heavyMotor)
+        {
+            BtOutputControl control = GetBtOutputControl(
+                useRumble, useAccurateRumble, hapticsStreamActive);
+
+            outputReport[2] = control.EnableFlags;
+            outputReport[4] = control.WriteMotorBytes ? lightMotor : (byte)0;
+            outputReport[5] = control.WriteMotorBytes ? heavyMotor : (byte)0;
+            outputReport[40] = control.PlayerLedFlags;
+            return control;
+        }
+
+        // Current rumble targets for the haptics streamer's rumble-to-haptics synth
+        internal byte CurrentRumbleHeavy => currentHap.rumbleState.RumbleMotorStrengthLeftHeavySlow;
+        internal byte CurrentRumbleLight => currentHap.rumbleState.RumbleMotorStrengthRightLightFast;
+
+        private volatile bool headsetPlugged = false;
+        public bool HeadsetPlugged => headsetPlugged;
+
         public override event ReportHandler<EventArgs> Report = null;
         public override event EventHandler BatteryChanged;
         public override event EventHandler ChargingChanged;
@@ -468,9 +518,50 @@ namespace DS4Windows.InputDevices
                 ds4Input.Name = "DualSense Input thread: " + Mac;
                 ds4Input.IsBackground = true;
                 ds4Input.Start();
+
+                if (conType == ConnectionType.BT)
+                {
+                    hapticsStreamerReady = true;
+                    RefreshHapticsStreamerState();
+                }
             }
             else
                 Console.WriteLine("Thread already running for DS4: " + Mac);
+        }
+
+        private void RefreshHapticsStreamerState()
+        {
+            if (conType != ConnectionType.BT || nativeOptionsStore == null || !hapticsStreamerReady)
+            {
+                return;
+            }
+
+            // StartUpdate, settings loading, and option-change notifications can
+            // all refresh concurrently during discovery. Atomic publication keeps
+            // those callers on one streamer instead of leaking orphan writer threads.
+            DualSenseHapticsStreamer streamer = Volatile.Read(ref hapticsStreamer);
+            if (streamer == null)
+            {
+                DualSenseHapticsStreamer candidate = new DualSenseHapticsStreamer(this, hDevice);
+                streamer = Interlocked.CompareExchange(ref hapticsStreamer, candidate, null) ?? candidate;
+            }
+
+            streamer.Configure(nativeOptionsStore.BTHapticsMode,
+                nativeOptionsStore.BTHapticsGain,
+                nativeOptionsStore.BTHapticsLowPassHz,
+                nativeOptionsStore.BTHapticsAudioDeviceId,
+                nativeOptionsStore.BTAudioEnabled,
+                nativeOptionsStore.BTAudioRoute,
+                nativeOptionsStore.BTAudioVolume,
+                nativeOptionsStore.BTAudioLatency);
+
+            // Push a fresh 0x31 report so the rumble-emulation flags reflect the
+            // new streaming state right away.
+            queueEvent(() =>
+            {
+                outputDirty = true;
+                currentHap.dirty = true;
+            });
         }
 
         private void TimeoutTestThread()
@@ -723,6 +814,10 @@ namespace DS4Windows.InputDevices
                     cState.FnR = (tempByte & (1 << 5)) != 0;
                     cState.BLP = (tempByte & (1 << 6)) != 0;
                     cState.BRP = (tempByte & (1 << 7)) != 0;
+
+                    // Bit 0 of the status byte flags a headset in the 3.5mm jack;
+                    // used for automatic BT audio routing.
+                    headsetPlugged = (inputReport[54 + reportOffset] & 0x01) != 0;
 
                     if ((this.featureSet & VidPidFeatureSet.NoBatteryReading) == 0)
                     {
@@ -981,6 +1076,8 @@ namespace DS4Windows.InputDevices
 
         protected override void StopOutputUpdate()
         {
+            hapticsStreamerReady = false;
+            hapticsStreamer?.Stop();
             SendEmptyOutputReport();
         }
 
@@ -1192,21 +1289,22 @@ namespace DS4Windows.InputDevices
                 // 0x20 Enable internal speaker (even while headset is connected)
                 // 0x40 Enable modification of microphone volume
                 // 0x80 Enable internal mic (even while headset is connected)
-                outputReport[2] = useRumble ? (byte)0x0F : (byte)0x0C; // 0x02 | 0x01 | 0x04 | 0x08;
+                // The firmware treats rumble emulation and the 0x32 haptic audio
+                // stream as mutually exclusive modes: any report that asserts the
+                // motor flags or the improved-rumble bit knocks it back into
+                // rumble emulation and mutes the stream. While the haptics
+                // streamer is active, keep all rumble emulation out of 0x31.
+                bool hapticsStreamActive = hapticsStreamer?.Active ?? false;
+                ApplyBtOutputControl(outputReport, useRumble, useAccurateRumble,
+                    hapticsStreamActive,
+                    currentHap.rumbleState.RumbleMotorStrengthRightLightFast,
+                    currentHap.rumbleState.RumbleMotorStrengthLeftHeavySlow);
 
                 // 0x01 Toggling microphone LED, 0x02 Toggling Audio/Mic Mute
                 // 0x04 Toggling LED strips on the sides of the Touchpad, 0x08 Turn off all LED lights
                 // 0x10 Toggle player LED lights below Touchpad, 0x20 ???
                 // 0x40 Adjust overall motor/effect power, 0x80 ???
                 outputReport[3] = 0x55; // 0x04 | 0x01 | 0x10 | 0x40
-
-                if (useRumble || useAccurateRumble)
-                {
-                    // Right? High Freq Motor
-                    outputReport[4] = currentHap.rumbleState.RumbleMotorStrengthRightLightFast;
-                    // Left? Low Freq Motor
-                    outputReport[5] = currentHap.rumbleState.RumbleMotorStrengthLeftHeavySlow;
-                }
 
                 /*
                 // Headphone volume
@@ -1265,8 +1363,8 @@ namespace DS4Windows.InputDevices
                 // 0x01 Enabled LED brightness (value in index 43)
                 // 0x02 Uninterruptable blue LED pulse (action in index 42)
                 // 0x04 Enable improved rumble emulation (Requires 2.24 firmware or newer)
-                outputReport[40] = useAccurateRumble ? (byte)0x06 : (byte)0x02; 
-
+                // Never assert improved rumble emulation while streaming haptic
+                // audio; it switches the firmware out of haptics mode.
                 // 0x01 Slowly (2s?) fade to blue (scheduled to when the regular LED settings are active)
                 // 0x02 Slowly (2s?) fade out (scheduled after fade-in completion) with eventual switch back to configured LED color; only a fade-out can cancel the pulse (neither index 2, 0x08, nor turning this off will cancel it!)
                 outputReport[43] = 0x02;
@@ -1531,6 +1629,11 @@ namespace DS4Windows.InputDevices
                     PreparePlayerLEDBarByte();
                     queueEvent(() => { outputDirty = true; });
                 };
+
+                nativeOptionsStore.BTHapticsOptionChanged += (sender, e) =>
+                {
+                    RefreshHapticsStreamerState();
+                };
             }
         }
 
@@ -1540,6 +1643,7 @@ namespace DS4Windows.InputDevices
             {
                 PrepareMuteLEDByte();
                 PreparePlayerLEDBarByte();
+                RefreshHapticsStreamerState();
             }
         }
     }

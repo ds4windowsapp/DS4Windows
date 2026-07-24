@@ -1915,6 +1915,17 @@ namespace DS4Windows
             get { return m_Config.customSteamFolder; }
         }
 
+        public static string UsbipExePath
+        {
+            set
+            {
+                m_Config.usbipExePath = string.IsNullOrWhiteSpace(value)
+                    ? BackingStore.DEFAULT_USBIP_EXE_PATH
+                    : value.Trim();
+            }
+            get { return m_Config.usbipExePath; }
+        }
+
         public static bool AutoProfileRevertDefaultProfile
         {
             set { m_Config.autoProfileRevertDefaultProfile = value; }
@@ -3391,6 +3402,7 @@ namespace DS4Windows
 
     public class BackingStore
     {
+        public const string DEFAULT_USBIP_EXE_PATH = @"C:\Program Files\USBip\usbip.exe";
         public const double DEFAULT_UDP_SMOOTH_MINCUTOFF = 0.4;
         public const double DEFAULT_UDP_SMOOTH_BETA = 0.2;
         // Use 15 minutes for default Idle Disconnect when initially enabling the option
@@ -3883,6 +3895,7 @@ namespace DS4Windows
         public double udpSmoothingBeta = DEFAULT_UDP_SMOOTH_BETA;
         public bool useCustomSteamFolder;
         public string customSteamFolder;
+        public string usbipExePath = DEFAULT_USBIP_EXE_PATH;
         public AppThemeChoice useCurrentTheme;
         public string fakeExeFileName = string.Empty;
         public string absDisplayEDID = string.Empty;

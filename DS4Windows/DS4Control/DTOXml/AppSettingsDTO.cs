@@ -616,6 +616,12 @@ namespace DS4WinWPF.DS4Control.DTOXml
             get; set;
         } = string.Empty;
 
+        [XmlElement("UsbipExePath")]
+        public string UsbipExePath
+        {
+            get; set;
+        } = BackingStore.DEFAULT_USBIP_EXE_PATH;
+
         [XmlIgnore]
         public bool AutoProfileRevertDefaultProfile
         {
@@ -876,6 +882,7 @@ namespace DS4WinWPF.DS4Control.DTOXml
             };
             UseCustomSteamFolder = source.useCustomSteamFolder;
             CustomSteamFolder = source.customSteamFolder;
+            UsbipExePath = source.usbipExePath;
             AutoProfileRevertDefaultProfile = source.autoProfileRevertDefaultProfile;
             AutoProfileSwitchNotifyChoice = source.autoProfileSwitchNotifyChoice;
             AbsRegionDisplay = source.absDisplayEDID;
@@ -980,6 +987,9 @@ namespace DS4WinWPF.DS4Control.DTOXml
 
             destination.useCustomSteamFolder = UseCustomSteamFolder;
             destination.customSteamFolder = CustomSteamFolder;
+            destination.usbipExePath = string.IsNullOrWhiteSpace(UsbipExePath)
+                ? BackingStore.DEFAULT_USBIP_EXE_PATH
+                : UsbipExePath.Trim();
             destination.autoProfileRevertDefaultProfile = AutoProfileRevertDefaultProfile;
             destination.autoProfileSwitchNotifyChoice = AutoProfileSwitchNotifyChoice;
             if (!string.IsNullOrEmpty(AbsRegionDisplay))

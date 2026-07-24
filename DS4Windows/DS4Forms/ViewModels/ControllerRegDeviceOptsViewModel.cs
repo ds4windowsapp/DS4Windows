@@ -18,8 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DS4Windows;
 using DS4WinWPF.DS4Forms.ViewModels.Util;
@@ -30,9 +32,10 @@ using JoinedGyroProvider = DS4Windows.JoyConDeviceOptions.JoinedGyroProvider;
 
 namespace DS4WinWPF.DS4Forms.ViewModels
 {
-    public class ControllerRegDeviceOptsViewModel
+    public class ControllerRegDeviceOptsViewModel : IDisposable
     {
         private ControlServiceDeviceOptions serviceDeviceOpts;
+        private ControlService service;
 
         public bool EnableDS4 { get => serviceDeviceOpts.DS4DeviceOpts.Enabled; }
 
@@ -135,13 +138,14 @@ namespace DS4WinWPF.DS4Forms.ViewModels
             ControlService service)
         {
             this.serviceDeviceOpts = serviceDeviceOpts;
+            this.service = service;
 
             int idx = 0;
             foreach(DS4Device device in service.DS4Controllers)
             {
                 if (device != null)
                 {
-                    currentInputDevices.Add(new DeviceListItem(device));
+                    currentInputDevices.Add(new DeviceListItem(device, idx));
                     inputDeviceSettings.Add(device.MacAddress, device.optionsStore);
                     controllerOptionsStores.Add(device.optionsStore);
                 }
@@ -187,6 +191,9 @@ namespace DS4WinWPF.DS4Forms.ViewModels
 
         public void FindFittingDataContext()
         {
+            if (dataContextObject is IDisposable disposable)
+                disposable.Dispose();
+
             ControllerOptionsStore currentStore =
                 controllerOptionsStores[controllerSelectedIndex];
 
@@ -199,7 +206,9 @@ namespace DS4WinWPF.DS4Forms.ViewModels
                     dataContextObject = new DS4ControllerOptionsWrapper(CurrentDS4Options, serviceDeviceOpts.DS4DeviceOpts);
                     break;
                 case DS4Windows.InputDevices.InputDeviceType.DualSense:
-                    dataContextObject = new DualSenseControllerOptionsWrapper(CurrentDSOptions, serviceDeviceOpts.DualSenseOpts);
+                    dataContextObject = new DualSenseControllerOptionsWrapper(
+                        CurrentDSOptions, serviceDeviceOpts.DualSenseOpts, service,
+                        currentInputDevices[controllerSelectedIndex].DeviceIndex);
                     break;
                 case DS4Windows.InputDevices.InputDeviceType.SwitchPro:
                     dataContextObject = new SwitchProControllerOptionsWrapper(CurrentSwitchProOptions, serviceDeviceOpts.SwitchProDeviceOpts);
@@ -220,21 +229,30 @@ namespace DS4WinWPF.DS4Forms.ViewModels
                 Global.SaveControllerConfigs(item.Device);
             }
         }
+
+        public void Dispose()
+        {
+            if (dataContextObject is IDisposable disposable)
+                disposable.Dispose();
+            dataContextObject = null;
+        }
     }
 
     public class DeviceListItem
     {
         private DS4Device device;
         public DS4Device Device { get => device; }
+        public int DeviceIndex { get; }
 
         public string IdText
         {
             get => $"{device.DisplayName} ({device.MacAddress})";
         }
 
-        public DeviceListItem(DS4Device device)
+        public DeviceListItem(DS4Device device, int deviceIndex)
         {
             this.device = device;
+            DeviceIndex = deviceIndex;
         }
     }
 
@@ -259,10 +277,20 @@ namespace DS4WinWPF.DS4Forms.ViewModels
         }
     }
 
-    public class DualSenseControllerOptionsWrapper
+    public class DualSenseControllerOptionsWrapper : IDisposable
     {
         private DualSenseControllerOptions options;
         public DualSenseControllerOptions Options { get => options; }
+
+        private readonly ControlService service;
+        private readonly int deviceIndex;
+        private readonly SynchronizationContext uiContext;
+        private bool nativeModeOperationInProgress;
+        private string nativeModeStatus;
+        private bool nativeHapticsDetected;
+        private double nativeHapticsLeftRmsPercent;
+        private double nativeHapticsRightRmsPercent;
+        private long nativeHapticsBluetoothErrors;
 
         private DualSenseDeviceOptions parentOptions;
         public bool Visible { get => parentOptions.Enabled; }
@@ -285,12 +313,410 @@ namespace DS4WinWPF.DS4Forms.ViewModels
         };
         public List<EnumChoiceSelection<MuteLEDMode>> DsMuteLEDModes { get => dsMuteLEDModes; }
 
+        private List<EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>> dsHapticsModes =
+            new List<EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>>()
+        {
+            new EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>(
+                Translations.Strings.ControllerRegOptWin_HapticsModeOff,
+                DualSenseControllerOptions.HapticsMode.Off),
+            new EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>(
+                Translations.Strings.ControllerRegOptWin_HapticsModeSystemAudio,
+                DualSenseControllerOptions.HapticsMode.SystemAudio),
+            new EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>(
+                Translations.Strings.ControllerRegOptWin_HapticsModeRumble,
+                DualSenseControllerOptions.HapticsMode.RumbleToHaptics),
+            new EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>(
+                Translations.Strings.ControllerRegOptWin_HapticsModeMix,
+                DualSenseControllerOptions.HapticsMode.Mix),
+        };
+        public List<EnumChoiceSelection<DualSenseControllerOptions.HapticsMode>> DsHapticsModes { get => dsHapticsModes; }
+
+        private List<HapticsAudioDeviceChoice> hapticsAudioDevices = new List<HapticsAudioDeviceChoice>();
+        public List<HapticsAudioDeviceChoice> HapticsAudioDevices { get => hapticsAudioDevices; }
+
+        private List<EnumChoiceSelection<DualSenseControllerOptions.AudioOutputRoute>> dsAudioRoutes =
+            new List<EnumChoiceSelection<DualSenseControllerOptions.AudioOutputRoute>>()
+        {
+            new EnumChoiceSelection<DualSenseControllerOptions.AudioOutputRoute>(
+                Translations.Strings.ControllerRegOptWin_AudioRouteAuto,
+                DualSenseControllerOptions.AudioOutputRoute.Auto),
+            new EnumChoiceSelection<DualSenseControllerOptions.AudioOutputRoute>(
+                Translations.Strings.ControllerRegOptWin_AudioRouteHeadphones,
+                DualSenseControllerOptions.AudioOutputRoute.Headphone),
+            new EnumChoiceSelection<DualSenseControllerOptions.AudioOutputRoute>(
+                Translations.Strings.ControllerRegOptWin_AudioRouteSpeaker,
+                DualSenseControllerOptions.AudioOutputRoute.Speaker),
+        };
+        public List<EnumChoiceSelection<DualSenseControllerOptions.AudioOutputRoute>> DsAudioRoutes { get => dsAudioRoutes; }
+
+        private List<EnumChoiceSelection<DualSenseControllerOptions.AudioLatencyMode>> dsAudioLatencies =
+            new List<EnumChoiceSelection<DualSenseControllerOptions.AudioLatencyMode>>()
+        {
+            new EnumChoiceSelection<DualSenseControllerOptions.AudioLatencyMode>(
+                Translations.Strings.ControllerRegOptWin_LatencySmooth,
+                DualSenseControllerOptions.AudioLatencyMode.Smooth),
+            new EnumChoiceSelection<DualSenseControllerOptions.AudioLatencyMode>(
+                Translations.Strings.ControllerRegOptWin_LatencyBalanced,
+                DualSenseControllerOptions.AudioLatencyMode.Balanced),
+            new EnumChoiceSelection<DualSenseControllerOptions.AudioLatencyMode>(
+                Translations.Strings.ControllerRegOptWin_LatencyLow,
+                DualSenseControllerOptions.AudioLatencyMode.LowLatency),
+        };
+        public List<EnumChoiceSelection<DualSenseControllerOptions.AudioLatencyMode>> DsAudioLatencies { get => dsAudioLatencies; }
+
+        private (string ButtonText, bool CanToggle, bool SettingsEnabled,
+            bool SetupCanRun) NativeModeControls =>
+            ProjectNativeModeControls(nativeModeOperationInProgress,
+                IsNativeModeSessionActive, service.NativeModeManager.State);
+
+        public string NativeModeButtonText => NativeModeControls.ButtonText;
+        public event EventHandler NativeModeButtonTextChanged;
+
+        public bool NativeModeCanToggle => NativeModeControls.CanToggle;
+        public event EventHandler NativeModeCanToggleChanged;
+
+        public bool NativeModeSettingsEnabled => NativeModeControls.SettingsEnabled;
+        public event EventHandler NativeModeSettingsEnabledChanged;
+
+        public bool NativeModeSetupCanRun => NativeModeControls.SetupCanRun;
+        public event EventHandler NativeModeSetupCanRunChanged;
+
+        public string NativeModeStatus => nativeModeStatus;
+        public event EventHandler NativeModeStatusChanged;
+
         public DualSenseControllerOptionsWrapper(DualSenseControllerOptions options,
-            DualSenseDeviceOptions parentOpts)
+            DualSenseDeviceOptions parentOpts, ControlService service, int deviceIndex)
         {
             this.options = options;
             this.parentOptions = parentOpts;
+            this.service = service;
+            this.deviceIndex = deviceIndex;
+            uiContext = SynchronizationContext.Current;
             parentOptions.EnabledChanged += (sender, e) => { VisibleChanged?.Invoke(this, EventArgs.Empty); };
+            service.NativeModeManager.StateChanged += NativeModeManager_StateChanged;
+            service.NativeModeManager.StatsChanged += NativeModeManager_StatsChanged;
+            service.NativeModeSessionActivityChanged += ControlService_NativeModeSessionActivityChanged;
+            nativeModeStatus = StatusForState(service.NativeModeManager.State,
+                null, IsNativeModeSessionActive);
+
+            PopulateHapticsAudioDevices();
+        }
+
+        public async Task ToggleNativeModeAsync()
+        {
+            if (nativeModeOperationInProgress)
+                return;
+
+            nativeModeOperationInProgress = true;
+            NotifyNativeModeProperties();
+            try
+            {
+                if (IsNativeModeSessionActive)
+                    await service.StopNativeModeAsync();
+                else
+                {
+                    System.Windows.MessageBoxResult confirmation =
+                        System.Windows.MessageBox.Show(
+                            NativeModeText("NativeModeSafetyConfirmation"),
+                            NativeModeText("NativeModeSafetyConfirmationTitle"),
+                            System.Windows.MessageBoxButton.YesNo,
+                            System.Windows.MessageBoxImage.Warning,
+                            System.Windows.MessageBoxResult.No);
+                    if (confirmation != System.Windows.MessageBoxResult.Yes)
+                        return;
+
+                    ApplyNativeSettingsToCurrentController();
+                    await service.StartNativeModeAsync(deviceIndex);
+                }
+            }
+            catch (Exception ex)
+            {
+                NativeModeState state = service.NativeModeManager.State;
+                nativeModeStatus = state == NativeModeState.SetupRequired ||
+                    state == NativeModeState.Faulted
+                    ? StatusForState(state, ex.Message)
+                    : NativeModeTextFormat("NativeModeErrorFormat", ex.Message);
+                NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+            finally
+            {
+                nativeModeOperationInProgress = false;
+                NotifyNativeModeProperties();
+            }
+        }
+
+        public async Task SetupNativeModeAsync()
+        {
+            if (nativeModeOperationInProgress || IsNativeModeSessionActive)
+                return;
+
+            nativeModeOperationInProgress = true;
+            NotifyNativeModeProperties();
+            try
+            {
+                nativeModeStatus =
+                    NativeModeText("NativeModeCheckingRequirements");
+                NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+                NativeModeAttachResult result =
+                    await service.EnsureNativeModeAttachTaskAsync();
+                nativeModeStatus = result.Success
+                    ? NativeModeText("NativeModeRequirementsReady")
+                    : NativeModeTextFormat(
+                        "NativeModeRequirementsFailedFormat", result.Reason);
+                NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                nativeModeStatus = NativeModeTextFormat(
+                    "NativeModeRequirementsFailedFormat", ex.Message);
+                NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+            finally
+            {
+                nativeModeOperationInProgress = false;
+                NotifyNativeModeProperties();
+            }
+        }
+
+        public void Dispose()
+        {
+            service.NativeModeManager.StateChanged -= NativeModeManager_StateChanged;
+            service.NativeModeManager.StatsChanged -= NativeModeManager_StatsChanged;
+            service.NativeModeSessionActivityChanged -= ControlService_NativeModeSessionActivityChanged;
+        }
+
+        private bool IsNativeModeSessionActive => service.IsNativeModeSessionActive;
+
+        private void ApplyNativeSettingsToCurrentController()
+        {
+            if (deviceIndex < 0 || deviceIndex >= service.DS4Controllers.Length ||
+                service.DS4Controllers[deviceIndex] is not DS4Windows.InputDevices.DualSenseDevice device)
+            {
+                return;
+            }
+
+            device.NativeOptionsStore.NativeModeSpeakerAudio = options.NativeModeSpeakerAudio;
+            device.NativeOptionsStore.NativeModeSpeakerVolume = options.NativeModeSpeakerVolume;
+            device.NativeOptionsStore.NativeModeRoute = options.NativeModeRoute;
+        }
+
+        private void NativeModeManager_StateChanged(object sender,
+            NativeModeStateChangedEventArgs e)
+        {
+            if (uiContext != null && SynchronizationContext.Current != uiContext)
+            {
+                uiContext.Post(_ => ApplyNativeModeState(e), null);
+            }
+            else
+            {
+                ApplyNativeModeState(e);
+            }
+        }
+
+        private void NativeModeManager_StatsChanged(object sender, EventArgs e)
+        {
+            if (uiContext != null && SynchronizationContext.Current != uiContext)
+            {
+                uiContext.Post(_ => ApplyNativeModeStats(), null);
+            }
+            else
+            {
+                ApplyNativeModeStats();
+            }
+        }
+
+        private void ControlService_NativeModeSessionActivityChanged(object sender, EventArgs e)
+        {
+            DispatchNativeModePropertyRefresh(uiContext,
+                () =>
+                {
+                    RefreshStoppedNativeModeStatus();
+                    NotifyNativeModeProperties();
+                });
+        }
+
+        internal static (string ButtonText, bool CanToggle,
+            bool SettingsEnabled, bool SetupCanRun) ProjectNativeModeControls(
+            bool operationInProgress, bool sessionActive,
+            NativeModeState managerState)
+        {
+            bool inactive = !operationInProgress && !sessionActive;
+            return (
+                sessionActive
+                    ? NativeModeText("NativeModeStop")
+                    : NativeModeText("NativeModeStart"),
+                !operationInProgress && managerState != NativeModeState.Starting,
+                inactive,
+                inactive);
+        }
+
+        internal static void DispatchNativeModePropertyRefresh(
+            SynchronizationContext context, Action refresh)
+        {
+            if (context != null && SynchronizationContext.Current != context)
+                context.Post(_ => refresh(), null);
+            else
+                refresh();
+        }
+
+        private void ApplyNativeModeState(NativeModeStateChangedEventArgs e)
+        {
+            if (e.State == NativeModeState.Starting)
+            {
+                nativeHapticsDetected = false;
+                nativeHapticsLeftRmsPercent = 0.0;
+                nativeHapticsRightRmsPercent = 0.0;
+                nativeHapticsBluetoothErrors = 0;
+            }
+
+            nativeModeStatus = e.State == NativeModeState.Attached
+                ? StatusForAttachedHaptics(nativeHapticsDetected,
+                    nativeHapticsLeftRmsPercent, nativeHapticsRightRmsPercent,
+                    nativeHapticsBluetoothErrors)
+                : StatusForState(e.State, e.Detail,
+                    IsNativeModeSessionActive);
+            NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+            NotifyNativeModeProperties();
+        }
+
+        private void RefreshStoppedNativeModeStatus()
+        {
+            if (service.NativeModeManager.State != NativeModeState.Stopped)
+                return;
+
+            string projected = StatusForState(NativeModeState.Stopped, null,
+                IsNativeModeSessionActive);
+            if (string.Equals(nativeModeStatus, projected,
+                StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            nativeModeStatus = projected;
+            NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ApplyNativeModeStats()
+        {
+            if (!NativeModeIsoTelemetryParser.TryParse(
+                service.NativeModeManager.LatestStats.IsochronousOut,
+                out NativeModeIsoTelemetry telemetry))
+            {
+                return;
+            }
+
+            nativeHapticsBluetoothErrors = telemetry.BluetoothErrorCount;
+            if (telemetry.HasNativeHapticSignal)
+            {
+                nativeHapticsDetected = true;
+                nativeHapticsLeftRmsPercent = telemetry.Channel3RmsPercent;
+                nativeHapticsRightRmsPercent = telemetry.Channel4RmsPercent;
+            }
+
+            if (service.NativeModeManager.State != NativeModeState.Attached)
+                return;
+
+            nativeModeStatus = StatusForAttachedHaptics(nativeHapticsDetected,
+                nativeHapticsLeftRmsPercent, nativeHapticsRightRmsPercent,
+                nativeHapticsBluetoothErrors);
+            NativeModeStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void NotifyNativeModeProperties()
+        {
+            NativeModeButtonTextChanged?.Invoke(this, EventArgs.Empty);
+            NativeModeCanToggleChanged?.Invoke(this, EventArgs.Empty);
+            NativeModeSettingsEnabledChanged?.Invoke(this, EventArgs.Empty);
+            NativeModeSetupCanRunChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal static string StatusForAttachedHaptics(bool detected,
+            double leftRmsPercent, double rightRmsPercent, long bluetoothErrors)
+        {
+            return detected
+                ? NativeModeTextFormat("NativeModeAttachedDetectedFormat",
+                    leftRmsPercent, rightRmsPercent, bluetoothErrors)
+                : NativeModeTextFormat("NativeModeAttachedWaitingFormat",
+                    bluetoothErrors);
+        }
+
+        internal static string StatusForState(NativeModeState state,
+            string detail, bool sessionActive = false)
+        {
+            if (state == NativeModeState.Stopped && sessionActive)
+                return NativeModeText("NativeModeCleanupPendingStatus");
+
+            return state switch
+            {
+                NativeModeState.Starting =>
+                    NativeModeText("NativeModeStartingStatus"),
+                NativeModeState.Serving =>
+                    NativeModeText("NativeModeServingStatus"),
+                NativeModeState.Attached =>
+                    NativeModeText("NativeModeAttachedStatus"),
+                NativeModeState.PadLost =>
+                    NativeModeText("NativeModePadLostStatus"),
+                NativeModeState.SetupRequired => string.IsNullOrWhiteSpace(detail)
+                    ? NativeModeText("NativeModeRequirementsRequiredStatus")
+                    : detail,
+                NativeModeState.Faulted => string.IsNullOrWhiteSpace(detail)
+                    ? NativeModeText("NativeModeFaultedStatus")
+                    : NativeModeTextFormat("NativeModeFaultedFormat", detail),
+                _ => NativeModeText("NativeModeStoppedStatus"),
+            };
+        }
+
+        private static string NativeModeText(string suffix) =>
+            Translations.Strings.ResourceManager.GetString(
+                $"ControllerRegOptWin.{suffix}",
+                Translations.Strings.Culture) ?? suffix;
+
+        private static string NativeModeTextFormat(
+            string suffix, params object[] arguments) =>
+            string.Format(
+                Translations.Strings.Culture ??
+                    CultureInfo.CurrentUICulture,
+                NativeModeText(suffix), arguments);
+
+        private void PopulateHapticsAudioDevices()
+        {
+            hapticsAudioDevices.Add(new HapticsAudioDeviceChoice(
+                Translations.Strings.ControllerRegOptWin_AudioDeviceDefault, string.Empty));
+            try
+            {
+                using NAudio.CoreAudioApi.MMDeviceEnumerator enumerator = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                foreach (NAudio.CoreAudioApi.MMDevice dev in enumerator.EnumerateAudioEndPoints(
+                    NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.DeviceState.Active))
+                {
+                    hapticsAudioDevices.Add(new HapticsAudioDeviceChoice(dev.FriendlyName, dev.ID));
+                    dev.Dispose();
+                }
+            }
+            catch (Exception)
+            {
+                // Endpoint enumeration is best-effort; the default entry always works.
+            }
+
+            // Keep the ComboBox binding valid if the saved endpoint disappeared.
+            if (!string.IsNullOrEmpty(options.BTHapticsAudioDeviceId) &&
+                !hapticsAudioDevices.Exists(item => item.Id == options.BTHapticsAudioDeviceId))
+            {
+                hapticsAudioDevices.Add(new HapticsAudioDeviceChoice(
+                    Translations.Strings.ControllerRegOptWin_AudioDeviceUnavailable,
+                    options.BTHapticsAudioDeviceId));
+            }
+        }
+    }
+
+    public class HapticsAudioDeviceChoice
+    {
+        public string DisplayName { get; }
+        public string Id { get; }
+
+        public HapticsAudioDeviceChoice(string displayName, string id)
+        {
+            DisplayName = displayName;
+            Id = id;
         }
     }
 

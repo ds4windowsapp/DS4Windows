@@ -85,8 +85,28 @@ namespace DS4WinWPF.DS4Forms
         private void Window_Closed(object sender, EventArgs e)
         {
             deviceOptsVM.SaveControllerConfigs();
+            deviceOptsVM.Dispose();
 
             devOptionsDockPanel.DataContext = null;
+        }
+
+        private async void NativeModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element &&
+                element.DataContext is DualSenseControllerOptionsWrapper wrapper)
+            {
+                await wrapper.ToggleNativeModeAsync();
+            }
+        }
+
+        private async void NativeModeSetupButton_Click(object sender,
+            RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element &&
+                element.DataContext is DualSenseControllerOptionsWrapper wrapper)
+            {
+                await wrapper.SetupNativeModeAsync();
+            }
         }
 
     }

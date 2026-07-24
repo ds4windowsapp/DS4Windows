@@ -392,6 +392,19 @@ namespace DS4WinWPF
                 exitApp = true;
                 Current.Shutdown();
             }
+            else if (parser.Validatedriver)
+            {
+                // Read-only smoke test of the Native Mode driver-validation
+                // gate. Runs before the ControlService or any window exists, so
+                // no controller is opened or released, no elevation is
+                // requested, and no attach can occur. Exit code: 0 pass,
+                // non-zero fail.
+                int validationExitCode =
+                    DS4Windows.NativeModeDriverValidationCommand.Run();
+                runShutdown = false;
+                exitApp = true;
+                Current.Shutdown(validationExitCode);
+            }
             else if (parser.ReenableDevice)
             {
                 DS4Windows.DS4Devices.reEnableDevice(parser.DeviceInstanceId);
@@ -748,6 +761,9 @@ namespace DS4WinWPF
             {
                 if (rootHub != null)
                 {
+                    // Application exit must synchronously tear down the child;
+                    // otherwise usbip-win2 keeps the virtual pad attached.
+                    rootHub.StopNativeModeForShutdown();
                     Task.Run(() =>
                     {
                         if (rootHub.running)

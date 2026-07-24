@@ -62,6 +62,7 @@
             </TabItem>
             
             <TabItem x:Name="dualSenseOptsTabItem" Header="DualSense" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="4">
                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                         <Label Content="{lex:Loc ControllerRegOptWin.PlayerLEDMode}" ContentStringFormat="{}{0}:" />
@@ -72,7 +73,122 @@
                         <Label Content="{lex:Loc ControllerRegOptWin.MuteLEDMode}" ContentStringFormat="{}{0}:" />
                         <ComboBox ItemsSource="{Binding Path=DsMuteLEDModes}" DisplayMemberPath="DisplayName" SelectedValuePath="ChoiceValue" SelectedValue="{Binding Options.MuteLedMode}" Margin="8,0,0,0" />
                     </StackPanel>
+
+                    <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,10,0,0"
+                               Text="{lex:Loc ControllerRegOptWin.StandardNativeModeNote}" />
+
+                    <Separator Margin="0,12,0,4" />
+                    <TextBlock Text="{lex:Loc ControllerRegOptWin.HapticsHeading}" FontWeight="Bold" Margin="0,4,0,0" />
+                    <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,2,0,0"
+                               Text="{lex:Loc ControllerRegOptWin.HapticsDescription}" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.HapticsMode}" ContentStringFormat="{}{0}:" />
+                        <ComboBox ItemsSource="{Binding Path=DsHapticsModes}" DisplayMemberPath="DisplayName" SelectedValuePath="ChoiceValue" SelectedValue="{Binding Options.BTHapticsMode}" Margin="8,0,0,0" MinWidth="180" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.AudioSource}" ContentStringFormat="{}{0}:" />
+                        <ComboBox ItemsSource="{Binding Path=HapticsAudioDevices}" DisplayMemberPath="DisplayName" SelectedValuePath="Id" SelectedValue="{Binding Options.BTHapticsAudioDeviceId}" Margin="8,0,0,0" MinWidth="260" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.Intensity}" ContentStringFormat="{}{0}:" />
+                        <Slider Value="{Binding Options.BTHapticsGain}" Minimum="0.5" Maximum="8" TickFrequency="0.5" IsSnapToTickEnabled="True" Width="180" Margin="8,4,0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Options.BTHapticsGain}" Margin="8,4,0,0" VerticalAlignment="Center" MinWidth="32" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.LowPassFilter}" ContentStringFormat="{}{0}:"
+                               ToolTip="{lex:Loc ControllerRegOptWin.LowPassFilterTip}" />
+                        <Slider Value="{Binding Options.BTHapticsLowPassHz}" Minimum="80" Maximum="800" TickFrequency="10" IsSnapToTickEnabled="True" Width="180" Margin="8,4,0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Options.BTHapticsLowPassHz}" Margin="8,4,0,0" VerticalAlignment="Center" MinWidth="32" />
+                    </StackPanel>
+
+                    <Separator Margin="0,12,0,4" />
+                    <TextBlock Text="{lex:Loc ControllerRegOptWin.BTAudioHeading}" FontWeight="Bold" Margin="0,4,0,0" />
+                    <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,2,0,0"
+                               Text="{lex:Loc ControllerRegOptWin.BTAudioDescription}" />
+
+                    <CheckBox Content="{lex:Loc ControllerRegOptWin.SendAudioToController}" IsChecked="{Binding Options.BTAudioEnabled}" Margin="0,8,0,0" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.AudioOutput}" ContentStringFormat="{}{0}:" />
+                        <ComboBox ItemsSource="{Binding Path=DsAudioRoutes}" DisplayMemberPath="DisplayName" SelectedValuePath="ChoiceValue" SelectedValue="{Binding Options.BTAudioRoute}" Margin="8,0,0,0" MinWidth="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.Volume}" ContentStringFormat="{}{0}:" />
+                        <Slider Value="{Binding Options.BTAudioVolume}" Minimum="0" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Width="180" Margin="8,4,0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Options.BTAudioVolume}" Margin="8,4,0,0" VerticalAlignment="Center" MinWidth="32" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Content="{lex:Loc ControllerRegOptWin.Buffering}" ContentStringFormat="{}{0}:"
+                               ToolTip="{lex:Loc ControllerRegOptWin.BufferingTip}" />
+                        <ComboBox ItemsSource="{Binding Path=DsAudioLatencies}" DisplayMemberPath="DisplayName" SelectedValuePath="ChoiceValue" SelectedValue="{Binding Options.BTAudioLatency}" Margin="8,0,0,0" MinWidth="220" />
+                    </StackPanel>
+
+                    <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,6,0,0"
+                               Text="{lex:Loc ControllerRegOptWin.BTStreamingNote}" />
+
+                    <GroupBox Header="{lex:Loc ControllerRegOptWin.NativeModeHeading}" Margin="0,16,0,4">
+                        <StackPanel Margin="8">
+                            <TextBlock TextWrapping="Wrap" Foreground="Gray"
+                                       Text="{lex:Loc ControllerRegOptWin.NativeModeDescription}" />
+                            <TextBlock TextWrapping="Wrap" Foreground="OrangeRed"
+                                       FontWeight="SemiBold" Margin="0,7,0,0"
+                                       Text="{lex:Loc ControllerRegOptWin.NativeModeSafetyWarning}" />
+
+                            <CheckBox Content="{lex:Loc ControllerRegOptWin.NativeModeRelaySpeakerAudio}"
+                                      IsChecked="{Binding Options.NativeModeSpeakerAudio}"
+                                      IsEnabled="{Binding NativeModeSettingsEnabled}"
+                                      Margin="0,8,0,0" />
+
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Label Content="{lex:Loc ControllerRegOptWin.NativeModeSpeakerVolume}"
+                                       ContentStringFormat="{}{0}:" />
+                                <Slider x:Name="nativeModeSpeakerVolumeSlider"
+                                        Value="{Binding Options.NativeModeSpeakerVolume}"
+                                        Minimum="0" Maximum="100" TickFrequency="5"
+                                        IsSnapToTickEnabled="True" Width="180"
+                                        IsEnabled="{Binding NativeModeSettingsEnabled}"
+                                        Margin="8,4,0,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding ElementName=nativeModeSpeakerVolumeSlider, Path=Value}"
+                                           Margin="8,4,0,0" VerticalAlignment="Center" MinWidth="32" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Label Content="{lex:Loc ControllerRegOptWin.NativeModeAudioOutput}"
+                                       ContentStringFormat="{}{0}:" />
+                                <ComboBox ItemsSource="{Binding Path=DsAudioRoutes}"
+                                          DisplayMemberPath="DisplayName"
+                                          SelectedValuePath="ChoiceValue"
+                                          SelectedValue="{Binding Options.NativeModeRoute}"
+                                          IsEnabled="{Binding NativeModeSettingsEnabled}"
+                                          Margin="8,0,0,0" MinWidth="220" />
+                            </StackPanel>
+
+                            <Button Content="{Binding NativeModeButtonText}"
+                                    IsEnabled="{Binding NativeModeCanToggle}"
+                                    Click="NativeModeButton_Click"
+                                    HorizontalAlignment="Left" MinWidth="140"
+                                    Margin="0,10,0,0" Padding="8,3" />
+
+                            <Button Content="{lex:Loc ControllerRegOptWin.NativeModeCheckRequirements}"
+                                    IsEnabled="{Binding NativeModeSetupCanRun}"
+                                    Click="NativeModeSetupButton_Click"
+                                    HorizontalAlignment="Left" MinWidth="140"
+                                    Margin="0,6,0,0" Padding="8,3" />
+
+                            <TextBlock Text="{Binding NativeModeStatus}" TextWrapping="Wrap"
+                                       Margin="0,8,0,0" />
+                            <TextBlock Text="{lex:Loc ControllerRegOptWin.NativeModeRequirementsNote}"
+                                       TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0" />
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem x:Name="switchProOptsTabItem" Header="Switch Pro" Visibility="Collapsed">
