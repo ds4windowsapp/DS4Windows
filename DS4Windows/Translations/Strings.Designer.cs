@@ -3830,7 +3830,34 @@ namespace DS4WinWPF.Translations {
                 return ResourceManager.GetString("ViGEmPluginFailure", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to ViGEmBus is not installed.
+        /// </summary>
+        public static string ViGEmBusNotInstalled {
+            get {
+                return ResourceManager.GetString("ViGEmBusNotInstalled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported ViGEmBus found ({0}). Please install at least ViGEmBus 1.17.333.0.
+        /// </summary>
+        public static string ViGEmBusUnsupportedVersion {
+            get {
+                return ResourceManager.GetString("ViGEmBusUnsupportedVersion", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not connect to ViGEmBus. Please check the status of the System device in Device Manager and if Visual C++ 2017 Redistributable is installed..
+        /// </summary>
+        public static string ViGEmBusConnectFailed {
+            get {
+                return ResourceManager.GetString("ViGEmBusConnectFailed", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Virtual Controller Settings.
         /// </summary>

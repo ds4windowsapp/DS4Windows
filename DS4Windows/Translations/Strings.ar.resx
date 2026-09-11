@@ -428,7 +428,7 @@ Gryo معين كفأرة</value>
     <value>ملفات التعريف</value>
   </data>
   <data name="NoControllersConnected" xml:space="preserve">
-    <value>(لا توجد أيادي تحكم متصلة (الأقصى {0}</value>
+    <value>لا توجد أيادي تحكم متصلة (الأقصى {0})</value>
   </data>
   <data name="FlickThreshold" xml:space="preserve">
     <value>بداية النقرة</value>

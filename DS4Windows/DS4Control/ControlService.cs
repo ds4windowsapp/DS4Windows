@@ -1708,15 +1708,15 @@ namespace DS4Windows
                 string logMessage = string.Empty;
                 if (!vigemInstalled)
                 {
-                    logMessage = "ViGEmBus is not installed";
+                    logMessage = DS4WinWPF.Translations.Strings.ViGEmBusNotInstalled;
                 }
                 else if (!Global.IsRunningSupportedViGEmBus())
                 {
-                    logMessage = string.Format("Unsupported ViGEmBus found ({0}). Please install at least ViGEmBus 1.17.333.0", Global.vigembusVersion);
+                    logMessage = string.Format(DS4WinWPF.Translations.Strings.ViGEmBusUnsupportedVersion, Global.vigembusVersion);
                 }
                 else
                 {
-                    logMessage = "Could not connect to ViGEmBus. Please check the status of the System device in Device Manager and if Visual C++ 2017 Redistributable is installed.";
+                    logMessage = DS4WinWPF.Translations.Strings.ViGEmBusConnectFailed;
                 }
 
                 LogDebug(logMessage);

@@ -86,6 +86,14 @@ namespace DS4WinWPF
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // Flip only each window's *content* to match the selected culture's reading direction,
+            // never the Window object itself -- setting FlowDirection on the Window would also mirror
+            // the native window chrome (min/max/close button side) and any image/icon inside, which we
+            // don't want. The actual direction value is kept in the "AppFlowDirection" resource and
+            // updated from SetUICulture whenever the language changes.
+            EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent,
+                new RoutedEventHandler(SyncWindowContentFlowDirection));
+
             runShutdown = true;
             skipSave = true;
 
@@ -677,6 +685,15 @@ namespace DS4WinWPF
             }
         }
 
+        private void SyncWindowContentFlowDirection(object sender, RoutedEventArgs e)
+        {
+            if (sender is Window window && window.Content is FrameworkElement rootContent &&
+                Application.Current.Resources["AppFlowDirection"] is FlowDirection dir)
+            {
+                rootContent.FlowDirection = dir;
+            }
+        }
+
         private void SetUICulture(string culture)
         {
             try
@@ -691,6 +708,13 @@ namespace DS4WinWPF
                 //DS4WinWPF.Properties.Resources.Culture = ci;
                 Thread.CurrentThread.CurrentCulture = ci;
                 Thread.CurrentThread.CurrentUICulture = ci;
+
+                // Match content layout direction to the selected culture (RTL for fa/ar/he, etc.).
+                // Stored as a resource that SyncWindowContentFlowDirection reads whenever a window
+                // loads, and applied only to each window's Content -- never the Window object itself,
+                // so native window chrome (min/max/close button side) and images stay unaffected.
+                Application.Current.Resources["AppFlowDirection"] =
+                    ci.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
             }
             catch (CultureNotFoundException) { /* Skip setting culture that we cannot set */ }
         }

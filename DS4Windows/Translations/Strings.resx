@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1478,4 +1478,4 @@ Please click OK to confirm that you have read the message. Press Cancel to be re
   <data name="InverseMotors" xml:space="preserve">
     <value>Inverse motors</value>
   </data>
-</root>
+<data name="Finished" xml:space="preserve"><value>Finished</value></data><data name="PresetOptWin.WinTitle" xml:space="preserve"><value>Select Preset</value></data><data name="ViGEmBusNotInstalled" xml:space="preserve"><value>ViGEmBus is not installed</value></data><data name="ViGEmBusUnsupportedVersion" xml:space="preserve"><value>Unsupported ViGEmBus found ({0}). Please install at least ViGEmBus 1.17.333.0</value></data><data name="ViGEmBusConnectFailed" xml:space="preserve"><value>Could not connect to ViGEmBus. Please check the status of the System device in Device Manager and if Visual C++ 2017 Redistributable is installed.</value></data></root>
