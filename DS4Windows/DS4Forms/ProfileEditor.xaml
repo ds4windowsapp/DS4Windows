@@ -1746,15 +1746,36 @@
                                             <ComboBox SelectedIndex="{Binding GyroMouseXAxis,FallbackValue=0}">
                                                 <ComboBoxItem Content="Yaw" />
                                                 <ComboBoxItem Content="Roll" />
+                                                <ComboBoxItem Content="Combined" />
                                             </ComboBox>
                                         </StackPanel>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
                                         <Label Content="Invert" Padding="0"/>
-                                        <CheckBox Content="X" Margin="8,0,0,0" IsChecked="{Binding GyroMouseInvertX}" />
+                                        <CheckBox Content="X" Margin="8,0,0,0" IsChecked="{Binding GyroMouseInvertX}" IsEnabled="{Binding GyroMouseLegacyAxis}" />
                                         <CheckBox Content="Y" Margin="8,0,0,0" IsChecked="{Binding GyroMouseInvertY}" />
                                     </StackPanel>
+
+                                    <GroupBox Header="Combined horizontal sensitivity" IsEnabled="{Binding GyroMouseCombined}" Margin="{StaticResource spaceMargin}"
+                                              ToolTip="Select Combined. Zero disables an axis; negative values invert it. Invert X is not applied in Combined mode.">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
+                                                <Label Content="Yaw sensitivity" Width="110" />
+                                                <Slider x:Name="gyroMouseYawSensitivitySlider" Width="140" Minimum="-100" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"
+                                                        SmallChange="1" LargeChange="10" Value="{Binding GyroMouseYawSensitivity,Mode=TwoWay}" AutomationProperties.Name="Yaw sensitivity" />
+                                                <xctk:IntegerUpDown MinWidth="60" Margin="8,0,0,0" Minimum="-100" Maximum="100" Increment="1"
+                                                                    Value="{Binding Value,ElementName=gyroMouseYawSensitivitySlider,Mode=TwoWay}" AutomationProperties.Name="Yaw sensitivity value" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
+                                                <Label Content="Roll sensitivity" Width="110" />
+                                                <Slider x:Name="gyroMouseRollSensitivitySlider" Width="140" Minimum="-100" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"
+                                                        SmallChange="1" LargeChange="10" Value="{Binding GyroMouseRollSensitivity,Mode=TwoWay}" AutomationProperties.Name="Roll sensitivity" />
+                                                <xctk:IntegerUpDown MinWidth="60" Margin="8,0,0,0" Minimum="-100" Maximum="100" Increment="1"
+                                                                    Value="{Binding Value,ElementName=gyroMouseRollSensitivitySlider,Mode=TwoWay}" AutomationProperties.Name="Roll sensitivity value" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
 
                                     <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
                                         <Label Content="{lex:Loc DeadZone}" />
@@ -1889,13 +1910,34 @@
                                         <ComboBox SelectedIndex="{Binding GyroMouseStickXAxis,FallbackValue=0}" Margin="8,0,0,0">
                                             <ComboBoxItem Content="Yaw" />
                                             <ComboBoxItem Content="Roll" />
+                                            <ComboBoxItem Content="Combined" />
                                         </ComboBox>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
-                                        <CheckBox Content="Invert X" IsChecked="{Binding GyroMouseStickInvertX}"/>
+                                        <CheckBox Content="Invert X" IsChecked="{Binding GyroMouseStickInvertX}" IsEnabled="{Binding GyroMouseStickLegacyAxis}"/>
                                         <CheckBox Content="Invert Y" Margin="10,0,0,0" IsChecked="{Binding GyroMouseStickInvertY}" />
                                     </StackPanel>
+
+                                    <GroupBox Header="Combined horizontal sensitivity" IsEnabled="{Binding GyroMouseStickCombined}" Margin="{StaticResource spaceMargin}"
+                                              ToolTip="Select Combined. Zero disables an axis; negative values invert it. Invert X is not applied in Combined mode.">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
+                                                <Label Content="Yaw sensitivity" Width="110" />
+                                                <Slider x:Name="gyroMouseStickYawSensitivitySlider" Width="140" Minimum="-100" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"
+                                                        SmallChange="1" LargeChange="10" Value="{Binding GyroMouseStickYawSensitivity,Mode=TwoWay}" AutomationProperties.Name="Yaw sensitivity" />
+                                                <xctk:IntegerUpDown MinWidth="60" Margin="8,0,0,0" Minimum="-100" Maximum="100" Increment="1"
+                                                                    Value="{Binding Value,ElementName=gyroMouseStickYawSensitivitySlider,Mode=TwoWay}" AutomationProperties.Name="Yaw sensitivity value" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
+                                                <Label Content="Roll sensitivity" Width="110" />
+                                                <Slider x:Name="gyroMouseStickRollSensitivitySlider" Width="140" Minimum="-100" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"
+                                                        SmallChange="1" LargeChange="10" Value="{Binding GyroMouseStickRollSensitivity,Mode=TwoWay}" AutomationProperties.Name="Roll sensitivity" />
+                                                <xctk:IntegerUpDown MinWidth="60" Margin="8,0,0,0" Minimum="-100" Maximum="100" Increment="1"
+                                                                    Value="{Binding Value,ElementName=gyroMouseStickRollSensitivitySlider,Mode=TwoWay}" AutomationProperties.Name="Roll sensitivity value" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
 
                                     <CheckBox Content="Jitter Compensation" Margin="{StaticResource spaceMargin}"
                                         IsChecked="{Binding GyroMouseStickJitterCompensation}" ToolTip="{lex:Loc GyroTriggerJitterCompensationTooltip}" />

@@ -81,10 +81,10 @@ namespace DS4Windows
 
         public virtual void sixaxisMoved(SixAxisEventArgs arg)
         {
-            int deltaX = 0, deltaY = 0;
-            deltaX = Global.getGyroMouseHorizontalAxis(deviceNumber) == 0 ? arg.sixAxis.gyroYawFull :
-                arg.sixAxis.gyroRollFull;
-            deltaY = -arg.sixAxis.gyroPitchFull;
+            int horizontalAxis = Global.getGyroMouseHorizontalAxis(deviceNumber);
+            double deltaX = Global.GyroMouseInfo[deviceNumber].horizontalSettings.Calculate(
+                horizontalAxis, arg.sixAxis.gyroYawFull, arg.sixAxis.gyroRollFull);
+            int deltaY = -arg.sixAxis.gyroPitchFull;
             //tempDouble = arg.sixAxis.elapsed * 0.001 * 200.0; // Base default speed on 5 ms
             tempDouble = arg.sixAxis.elapsed * 200.0; // Base default speed on 5 ms
 
@@ -249,7 +249,8 @@ namespace DS4Windows
             }
 
             int gyroInvert = Global.getGyroInvert(deviceNumber);
-            if ((gyroInvert & 0x02) == 2)
+            // Combined weights already carry their own signs.
+            if (horizontalAxis != GyroHorizontalSettings.COMBINED && (gyroInvert & 0x02) == 2)
                 xAction *= -1;
 
             if ((gyroInvert & 0x01) == 1)

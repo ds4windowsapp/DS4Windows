@@ -20,6 +20,13 @@ modifications to the code that detects if the installed version is up-to-date, s
 repo. This way if you install my version, you don't get the annoying popup saying your version is outdated. If there 
 are any feature requests, I'm more than happy to at least look at them and assess whether I could add them.
 
+## Combined yaw + roll gyro aiming
+
+Gyro Mouse and Gyro Mouse Joystick now offer **X Axis → Combined**, with independent
+signed **Yaw sensitivity** and **Roll sensitivity** sliders (`-100` to `100`).
+Existing Yaw/Roll profiles retain their original behavior. See
+[setup, profile compatibility, and verification](doc/combined-gyro.md).
+
 ## License
 
 DS4Windows is licensed under the terms of the GNU General Public License version 3.

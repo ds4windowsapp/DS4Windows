@@ -924,8 +924,14 @@ namespace DS4WinWPF.DS4Control.DTOXml
         public int GyroMouseHAxis
         {
             get => _gyroMouseHAxis;
-            set => _gyroMouseHAxis = Math.Clamp(value, 0, 1);
+            set => _gyroMouseHAxis = Math.Clamp(value, 0, GyroHorizontalSettings.COMBINED);
         }
+
+        [XmlElement("GyroMouseYawSensitivity")]
+        public int? GyroMouseYawSensitivity { get; set; }
+
+        [XmlElement("GyroMouseRollSensitivity")]
+        public int? GyroMouseRollSensitivity { get; set; }
 
         private int _gyroMouseDeadZone = MouseCursor.GYRO_MOUSE_DEADZONE;
         [XmlElement("GyroMouseDeadZone")]
@@ -996,8 +1002,14 @@ namespace DS4WinWPF.DS4Control.DTOXml
         public int GyroMouseStickHAxis
         {
             get => _gyroMouseStickHAxis;
-            set => _gyroMouseStickHAxis = Math.Clamp(value, 0, 1);
+            set => _gyroMouseStickHAxis = Math.Clamp(value, 0, GyroHorizontalSettings.COMBINED);
         }
+
+        [XmlElement("GyroMouseStickYawSensitivity")]
+        public int? GyroMouseStickYawSensitivity { get; set; }
+
+        [XmlElement("GyroMouseStickRollSensitivity")]
+        public int? GyroMouseStickRollSensitivity { get; set; }
 
         private int _gyroMouseStickDeadZone = GyroMouseStickInfo.DEFAULT_DEADZONE;
         [XmlElement("GyroMouseStickDeadZone")]
@@ -1630,6 +1642,8 @@ namespace DS4WinWPF.DS4Control.DTOXml
             _gyroMouseStickTriggerCond = source.sAMouseStickTriggerCond[deviceIndex];
             _gyroMouseStickTriggerTurns = source.gyroMouseStickTriggerTurns[deviceIndex];
             GyroMouseStickHAxis = source.gyroMouseStickHorizontalAxis[deviceIndex];
+            GyroMouseStickYawSensitivity = source.gyroMStickInfo[deviceIndex].horizontalSettings.YawSensitivity;
+            GyroMouseStickRollSensitivity = source.gyroMStickInfo[deviceIndex].horizontalSettings.RollSensitivity;
             GyroMouseStickDeadZone = source.gyroMStickInfo[deviceIndex].deadZone;
             GyroMouseStickMaxZone = source.gyroMStickInfo[deviceIndex].maxZone;
             GyroMouseStickOutputStick = source.gyroMStickInfo[deviceIndex].outputStick;
@@ -1675,6 +1689,8 @@ namespace DS4WinWPF.DS4Control.DTOXml
                 SmoothingBeta = source.gyroMouseInfo[deviceIndex].beta,
             };
             GyroMouseHAxis = source.gyroMouseHorizontalAxis[deviceIndex];
+            GyroMouseYawSensitivity = source.gyroMouseInfo[deviceIndex].horizontalSettings.YawSensitivity;
+            GyroMouseRollSensitivity = source.gyroMouseInfo[deviceIndex].horizontalSettings.RollSensitivity;
             GyroMouseDeadZone = source.gyroMouseDZ[deviceIndex];
             GyroMouseMinThreshold = source.gyroMouseInfo[deviceIndex].minThreshold;
             _gyroMouseJitterCompensation = source.gyroMouseInfo[deviceIndex].jitterCompensation;
@@ -2224,6 +2240,8 @@ namespace DS4WinWPF.DS4Control.DTOXml
             destination.sAMouseStickTriggerCond[deviceIndex] = _gyroMouseStickTriggerCond;
             destination.gyroMouseStickTriggerTurns[deviceIndex] = _gyroMouseStickTriggerTurns;
             destination.gyroMouseStickHorizontalAxis[deviceIndex] = GyroMouseStickHAxis;
+            destination.gyroMStickInfo[deviceIndex].horizontalSettings.Load(GyroMouseStickHAxis,
+                (GyroMouseStickInvert & 1) != 0, GyroMouseStickYawSensitivity, GyroMouseStickRollSensitivity);
             destination.gyroMStickInfo[deviceIndex].deadZone = GyroMouseStickDeadZone;
             destination.gyroMStickInfo[deviceIndex].maxZone = GyroMouseStickMaxZone;
             destination.gyroMStickInfo[deviceIndex].outputStick = GyroMouseStickOutputStick;
@@ -2283,6 +2301,8 @@ namespace DS4WinWPF.DS4Control.DTOXml
             }
 
             destination.gyroMouseHorizontalAxis[deviceIndex] = GyroMouseHAxis;
+            destination.gyroMouseInfo[deviceIndex].horizontalSettings.Load(GyroMouseHAxis,
+                (GyroInvert & 2) != 0, GyroMouseYawSensitivity, GyroMouseRollSensitivity);
             destination.gyroMouseDZ[deviceIndex] = GyroMouseDeadZone;
             destination.gyroMouseInfo[deviceIndex].minThreshold = GyroMouseMinThreshold;
             destination.gyroMouseInfo[deviceIndex].jitterCompensation = _gyroMouseJitterCompensation;

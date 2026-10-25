@@ -184,6 +184,41 @@ namespace DS4Windows
         }
     }
 
+    public class GyroHorizontalSettings
+    {
+        public const int COMBINED = 2;
+
+        private int yawSensitivity = 100;
+        private int rollSensitivity = -100;
+
+        public int YawSensitivity
+        {
+            get => yawSensitivity;
+            set => yawSensitivity = Math.Clamp(value, -100, 100);
+        }
+
+        public int RollSensitivity
+        {
+            get => rollSensitivity;
+            set => rollSensitivity = Math.Clamp(value, -100, 100);
+        }
+
+        public double Calculate(int axis, double yaw, double roll)
+        {
+            return axis == COMBINED
+                ? yaw * (YawSensitivity / 100.0) + roll * (RollSensitivity / 100.0)
+                : axis == 0 ? yaw : roll;
+        }
+
+        public void Load(int legacyAxis = 0, bool inverted = false,
+            int? yaw = null, int? roll = null)
+        {
+            int sign = inverted ? -100 : 100;
+            YawSensitivity = yaw ?? (legacyAxis == 1 ? 0 : sign);
+            RollSensitivity = roll ?? (legacyAxis == 1 ? sign : 0);
+        }
+    }
+
     public class GyroMouseInfo
     {
         public enum SmoothingMethod : byte
@@ -200,6 +235,7 @@ namespace DS4Windows
         public const bool JITTER_COMPENSATION_DEFAULT = true;
 
         public bool enableSmoothing = false;
+        public readonly GyroHorizontalSettings horizontalSettings = new GyroHorizontalSettings();
         public double smoothingWeight = 0.5;
         public SmoothingMethod smoothingMethod;
 
@@ -248,6 +284,7 @@ namespace DS4Windows
         public void Reset()
         {
             minCutoff = DEFAULT_MINCUTOFF;
+            horizontalSettings.Load(roll: -100);
             beta = DEFAULT_BETA;
             enableSmoothing = false;
             smoothingMethod = SmoothingMethod.None;
@@ -366,6 +403,7 @@ namespace DS4Windows
         public const uint DEFAULT_INVERTED = 0;
 
         public int deadZone = DEFAULT_DEADZONE;
+        public readonly GyroHorizontalSettings horizontalSettings = new GyroHorizontalSettings();
         public int maxZone = DEFAULT_MAXZONE;
         public double antiDeadX = DEFAULT_ANTI_DEAD;
         public double antiDeadY = DEFAULT_ANTI_DEAD;
@@ -424,6 +462,7 @@ namespace DS4Windows
         public void Reset()
         {
             deadZone = DEFAULT_DEADZONE; maxZone = DEFAULT_MAXZONE;
+            horizontalSettings.Load(roll: -100);
             antiDeadX = DEFAULT_ANTI_DEAD; antiDeadY = DEFAULT_ANTI_DEAD;
             inverted = DEFAULT_INVERTED; vertScale = DEFAULT_VERTICAL_SCALE;
             maxOutputEnabled = false; maxOutput = DEFAULT_MAX_OUTPUT;

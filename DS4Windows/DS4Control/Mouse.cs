@@ -447,7 +447,7 @@ namespace DS4Windows
         }
 
         private const int SMOOTH_BUFFER_LEN = 3;
-        private int[] xSmoothBuffer = new int[SMOOTH_BUFFER_LEN];
+        private double[] xSmoothBuffer = new double[SMOOTH_BUFFER_LEN];
         private int[] ySmoothBuffer = new int[SMOOTH_BUFFER_LEN];
         private int smoothBufferTail = 0;
 
@@ -469,15 +469,14 @@ namespace DS4Windows
 
         private void SixMouseStick(SixAxisEventArgs arg)
         {
-            int deltaX = 0, deltaY = 0;
-            deltaX = Global.getGyroMouseStickHorizontalAxis(0) == 0 ? arg.sixAxis.gyroYawFull :
-                arg.sixAxis.gyroRollFull;
-            deltaY = -arg.sixAxis.gyroPitchFull;
+            int horizontalAxis = Global.getGyroMouseStickHorizontalAxis(deviceNum);
+            GyroMouseStickInfo msinfo = Global.GetGyroMouseStickInfo(deviceNum);
+            double deltaX = msinfo.horizontalSettings.Calculate(horizontalAxis,
+                arg.sixAxis.gyroYawFull, arg.sixAxis.gyroRollFull);
+            int deltaY = -arg.sixAxis.gyroPitchFull;
             //int inputX = deltaX, inputY = deltaY;
             int maxDirX = deltaX >= 0 ? 127 : -128;
             int maxDirY = deltaY >= 0 ? 127 : -128;
-
-            GyroMouseStickInfo msinfo = Global.GetGyroMouseStickInfo(deviceNum);
 
             double tempDouble = arg.sixAxis.elapsed * 250.0; // Base default speed on 4 ms
             double tempAngle = Math.Atan2(-deltaY, deltaX);
@@ -531,7 +530,8 @@ namespace DS4Windows
                 double absX = Math.Abs(deltaX);
                 if (absX <= normX * threshold)
                 {
-                    deltaX = (int)(signX * Math.Pow(absX / thresholdF, 1.408) * threshold);
+                    double jitterX = signX * Math.Pow(absX / thresholdF, 1.408) * threshold;
+                    deltaX = horizontalAxis == GyroHorizontalSettings.COMBINED ? jitterX : (int)jitterX;
                 }
 
                 double absY = Math.Abs(deltaY);
@@ -546,7 +546,8 @@ namespace DS4Windows
                 if (msinfo.smoothingMethod == GyroMouseStickInfo.SmoothingMethod.OneEuro)
                 {
                     double currentRate = 1.0 / arg.sixAxis.elapsed;
-                    deltaX = (int)(filterPair.axis1Filter.Filter(deltaX, currentRate));
+                    double filteredX = filterPair.axis1Filter.Filter(deltaX, currentRate);
+                    deltaX = horizontalAxis == GyroHorizontalSettings.COMBINED ? filteredX : (int)filteredX;
                     deltaY = (int)(filterPair.axis2Filter.Filter(deltaY, currentRate));
                 }
                 else if (msinfo.smoothingMethod == GyroMouseStickInfo.SmoothingMethod.WeightedAverage)
@@ -570,7 +571,7 @@ namespace DS4Windows
                     }
 
                     x_out /= finalWeight;
-                    deltaX = (int)x_out;
+                    deltaX = horizontalAxis == GyroHorizontalSettings.COMBINED ? x_out : (int)x_out;
                     y_out /= finalWeight;
                     deltaY = (int)y_out;
                 }
@@ -616,7 +617,8 @@ namespace DS4Windows
 
             if (msinfo.inverted != 0)
             {
-                if ((msinfo.inverted & 1) == 1)
+                // Combined weights already carry their own signs.
+                if (horizontalAxis != GyroHorizontalSettings.COMBINED && (msinfo.inverted & 1) == 1)
                 {
                     // Invert max dir value
                     maxDirX = deltaX >= 0 ? -128 : 127;

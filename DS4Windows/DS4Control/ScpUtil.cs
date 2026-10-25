@@ -9653,6 +9653,7 @@ namespace DS4Windows
 
             gyroMouseHorizontalAxis[device] = 0;
             gyroMouseToggle[device] = false;
+            gyroMouseStickHorizontalAxis[device] = 0;
             //squStickInfo[device].lsMode = false;
             //squStickInfo[device].rsMode = false;
             //squStickInfo[device].lsRoundness = SquareStickInfo.DEFAULT_ROUNDNESS;

@@ -219,6 +219,8 @@ namespace DS4WindowsTests
     <SmoothingBeta>0.7</SmoothingBeta>
   </GyroMouseSmoothingSettings>
   <GyroMouseHAxis>0</GyroMouseHAxis>
+  <GyroMouseYawSensitivity>100</GyroMouseYawSensitivity>
+  <GyroMouseRollSensitivity>0</GyroMouseRollSensitivity>
   <GyroMouseDeadZone>10</GyroMouseDeadZone>
   <GyroMouseMinThreshold>1</GyroMouseMinThreshold>
   <GyroMouseToggle>False</GyroMouseToggle>
@@ -228,6 +230,8 @@ namespace DS4WindowsTests
   <GyroMouseStickTriggerCond>and</GyroMouseStickTriggerCond>
   <GyroMouseStickTriggerTurns>True</GyroMouseStickTriggerTurns>
   <GyroMouseStickHAxis>0</GyroMouseStickHAxis>
+  <GyroMouseStickYawSensitivity>100</GyroMouseStickYawSensitivity>
+  <GyroMouseStickRollSensitivity>0</GyroMouseStickRollSensitivity>
   <GyroMouseStickDeadZone>30</GyroMouseStickDeadZone>
   <GyroMouseStickMaxZone>830</GyroMouseStickMaxZone>
   <GyroMouseStickOutputStick>None</GyroMouseStickOutputStick>

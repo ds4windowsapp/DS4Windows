@@ -2388,7 +2388,29 @@ namespace DS4WinWPF.DS4Forms.ViewModels
         public int GyroMouseXAxis
         {
             get => Global.GyroMouseHorizontalAxis[device];
-            set => Global.GyroMouseHorizontalAxis[device] = value;
+            set
+            {
+                Global.GyroMouseHorizontalAxis[device] = value;
+                GyroMouseCombinedChanged?.Invoke(this, EventArgs.Empty);
+                GyroMouseLegacyAxisChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public bool GyroMouseCombined => GyroMouseXAxis == GyroHorizontalSettings.COMBINED;
+        public bool GyroMouseLegacyAxis => !GyroMouseCombined;
+        public event EventHandler GyroMouseCombinedChanged;
+        public event EventHandler GyroMouseLegacyAxisChanged;
+
+        public int GyroMouseYawSensitivity
+        {
+            get => Global.GyroMouseInfo[device].horizontalSettings.YawSensitivity;
+            set => Global.GyroMouseInfo[device].horizontalSettings.YawSensitivity = value;
+        }
+
+        public int GyroMouseRollSensitivity
+        {
+            get => Global.GyroMouseInfo[device].horizontalSettings.RollSensitivity;
+            set => Global.GyroMouseInfo[device].horizontalSettings.RollSensitivity = value;
         }
 
         public double GyroMouseMinThreshold
@@ -2752,7 +2774,29 @@ namespace DS4WinWPF.DS4Forms.ViewModels
         public int GyroMouseStickXAxis
         {
             get => Global.GyroMouseStickHorizontalAxis[device];
-            set => Global.GyroMouseStickHorizontalAxis[device] = value;
+            set
+            {
+                Global.GyroMouseStickHorizontalAxis[device] = value;
+                GyroMouseStickCombinedChanged?.Invoke(this, EventArgs.Empty);
+                GyroMouseStickLegacyAxisChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public bool GyroMouseStickCombined => GyroMouseStickXAxis == GyroHorizontalSettings.COMBINED;
+        public bool GyroMouseStickLegacyAxis => !GyroMouseStickCombined;
+        public event EventHandler GyroMouseStickCombinedChanged;
+        public event EventHandler GyroMouseStickLegacyAxisChanged;
+
+        public int GyroMouseStickYawSensitivity
+        {
+            get => Global.GyroMouseStickInf[device].horizontalSettings.YawSensitivity;
+            set => Global.GyroMouseStickInf[device].horizontalSettings.YawSensitivity = value;
+        }
+
+        public int GyroMouseStickRollSensitivity
+        {
+            get => Global.GyroMouseStickInf[device].horizontalSettings.RollSensitivity;
+            set => Global.GyroMouseStickInf[device].horizontalSettings.RollSensitivity = value;
         }
 
         public bool GyroMouseStickInvertX
