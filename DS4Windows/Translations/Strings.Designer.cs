@@ -582,6 +582,24 @@ namespace DS4WinWPF.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close to Tray.
+        /// </summary>
+        public static string CloseToTray {
+            get {
+                return ResourceManager.GetString("CloseToTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When enabled, closing the window hides it to the system tray and keeps DS4Windows running. When disabled, the existing close behavior is used..
+        /// </summary>
+        public static string CloseToTrayTip {
+            get {
+                return ResourceManager.GetString("CloseToTrayTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         public static string Color {

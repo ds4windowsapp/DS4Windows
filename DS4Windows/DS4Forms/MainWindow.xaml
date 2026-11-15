@@ -303,6 +303,9 @@
                         <CheckBox Content="{lex:Loc CloseMinimizes}" Margin="{StaticResource spaceMargin}"
                               IsChecked="{Binding CloseMinimizes}"
                               ToolTip="{lex:Loc Resources:CloseMinimize}" />
+                        <CheckBox Content="{lex:Loc CloseToTray}" Margin="{StaticResource spaceMargin}"
+                              IsChecked="{Binding CloseToTray}"
+                              ToolTip="{lex:Loc CloseToTrayTip}" />
                         <CheckBox Content="{lex:Loc QuickCharge}" Margin="{StaticResource spaceMargin}"
                               IsChecked="{Binding QuickCharge}"
                               ToolTip="{lex:Loc Resources:QuickCharge}" />

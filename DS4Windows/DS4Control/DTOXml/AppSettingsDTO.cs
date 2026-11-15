@@ -399,6 +399,25 @@ namespace DS4WinWPF.DS4Control.DTOXml
             }
         }
 
+        [XmlIgnore]
+        public bool CloseToTray
+        {
+            get; private set;
+        }
+
+        [XmlElement("CloseToTray")]
+        public string CloseToTrayString
+        {
+            get => CloseToTray.ToString();
+            set
+            {
+                if (bool.TryParse(value, out bool temp))
+                {
+                    CloseToTray = temp;
+                }
+            }
+        }
+
         // Default UseLang to empty string. Not null
         public string UseLang
         {
@@ -853,6 +872,7 @@ namespace DS4WinWPF.DS4Control.DTOXml
             UseMoonlight = source.useMoonlight;
             UseAdvancedMoonlight = source.useAdvancedMoonlight;
             CloseMinimizes = source.closeMini;
+            CloseToTray = source.closeToTray;
             UseLang = source.useLang;
             DownloadLang = source.downloadLang;
             FlashWhenLate = source.flashWhenLate;
@@ -950,6 +970,7 @@ namespace DS4WinWPF.DS4Control.DTOXml
             destination.useMoonlight = UseMoonlight;
             destination.useAdvancedMoonlight = UseAdvancedMoonlight;
             destination.closeMini = CloseMinimizes;
+            destination.closeToTray = CloseToTray;
             destination.useLang = UseLang;
             destination.downloadLang = DownloadLang;
             destination.flashWhenLate = FlashWhenLate;

@@ -64,6 +64,7 @@ namespace DS4WindowsTests
   <SwipeProfiles>True</SwipeProfiles>
   <QuickCharge>False</QuickCharge>
   <CloseMinimizes>False</CloseMinimizes>
+  <CloseToTray>False</CloseToTray>
   <UseLang />
   <DownloadLang>False</DownloadLang>
   <FlashWhenLate>True</FlashWhenLate>
@@ -132,6 +133,31 @@ namespace DS4WindowsTests
             // Check settings
             DateTime.TryParse(dto.LastCheckString, out DateTime tempLastChecked);
             Assert.AreEqual(tempLastChecked, tempStore.lastChecked);
+            Assert.IsFalse(tempStore.closeToTray);
+        }
+
+        [TestMethod]
+        public void CheckCloseToTraySettingRoundTrip()
+        {
+            BackingStore sourceStore = new BackingStore
+            {
+                closeToTray = true,
+            };
+
+            AppSettingsDTO dto = new AppSettingsDTO();
+            dto.MapFrom(sourceStore);
+            Assert.IsTrue(dto.CloseToTray);
+
+            BackingStore destinationStore = new BackingStore();
+            dto.MapTo(destinationStore);
+            Assert.IsTrue(destinationStore.closeToTray);
+        }
+
+        [TestMethod]
+        public void CheckCloseToTrayTranslationsExist()
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(DS4WinWPF.Translations.Strings.CloseToTray));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(DS4WinWPF.Translations.Strings.CloseToTrayTip));
         }
 
         [TestMethod]
