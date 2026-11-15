@@ -142,6 +142,7 @@ namespace DS4WinWPF.DS4Forms.ViewModels
         public bool StartMinimize { get => DS4Windows.Global.StartMinimized; set => DS4Windows.Global.StartMinimized = value; }
         public bool MinimizeToTaskbar { get => DS4Windows.Global.MinToTaskbar; set => DS4Windows.Global.MinToTaskbar = value; }
         public bool CloseMinimizes { get => DS4Windows.Global.CloseMini; set => DS4Windows.Global.CloseMini = value; }
+        public bool CloseToTray { get => DS4Windows.Global.CloseToTray; set => DS4Windows.Global.CloseToTray = value; }
         public bool QuickCharge { get => DS4Windows.Global.QuickCharge; set => DS4Windows.Global.QuickCharge = value; }
 
         public int IconChoiceIndex

@@ -1007,6 +1007,14 @@ Suspend support not enabled.", true);
             {
                 return;
             }
+            else if (Global.CloseToTray)
+            {
+                // Hide to the system tray and keep the background service running
+                Hide();
+                showAppInTaskbar = false;
+                e.Cancel = true;
+                return;
+            }
             else if (Global.CloseMini)
             {
                 WindowState = WindowState.Minimized;

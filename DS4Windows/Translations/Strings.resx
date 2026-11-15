@@ -165,6 +165,12 @@
   <data name="CloseMinimizes" xml:space="preserve">
     <value>Close Minimizes</value>
   </data>
+  <data name="CloseToTray" xml:space="preserve">
+    <value>Close to Tray</value>
+  </data>
+  <data name="CloseToTrayTip" xml:space="preserve">
+    <value>When enabled, closing the window hides it to the system tray and keeps DS4Windows running. When disabled, the existing close behavior is used.</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>
